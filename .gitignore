@@ -4,3 +4,5 @@
 vmoptions.txts
 *mwn
 *.cmd
+timesheeter-ui/src/main/frontend/node
+timesheeter-ui/src/main/frontend/node_modules
