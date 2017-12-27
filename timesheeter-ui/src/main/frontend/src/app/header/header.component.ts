@@ -9,12 +9,18 @@ import {Router} from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
 
+  isMenuCollapsed : boolean;
+
   constructor(
     private userService: UserService,
     private authService: AuthService,
     private router: Router
-  ) { }
-
+  ) {
+    this.isMenuCollapsed = false;
+  }
+  onClick(){
+    this.isMenuCollapsed = !this.isMenuCollapsed;
+  }
   ngOnInit() {
   }
 

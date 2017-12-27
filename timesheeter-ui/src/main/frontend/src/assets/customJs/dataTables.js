@@ -1,0 +1,3 @@
+jQuery(function($){
+  $('#allTimesheetId').DataTable();
+} );

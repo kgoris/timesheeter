@@ -17,6 +17,7 @@ import {AdminGuard, GuestGuard, LoginGuard} from "./guard";
 import {ApiService, AuthService, BusinessService, ConfigService, UserService} from "./service";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { TimesheetComponent } from './timesheet/timesheet.component';
+import { DetailComponent } from './detail/detail.component';
 
 
 
@@ -31,6 +32,7 @@ import { TimesheetComponent } from './timesheet/timesheet.component';
     NotFoundComponent,
     ForbiddenComponent,
     TimesheetComponent,
+    DetailComponent,
   ],
   imports: [
     BrowserModule,

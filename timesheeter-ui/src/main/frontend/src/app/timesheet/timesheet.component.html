@@ -1,7 +1,9 @@
 <div class="voffset3">
 
 
-  <form class="form-vertical"  *ngIf="!submitted" [formGroup]="form" (ngSubmit)="onSubmit()" #timesheetForm="ngForm">
+  <form class="form-vertical"  [formGroup]="form"
+        (ngSubmit)="onSubmit()" #timesheetForm="ngForm"
+        ngNativeValidate>
     <div class="row">
       <div class="col-md-3"></div>
       <div class="col-md-6">
@@ -14,7 +16,10 @@
       <div class="col-md-6">
             <label for="dateJour" class="col-sm-3 col-form-label">Date du jour</label>
             <input class="col-sm-3" placeholder="dd/mm/yyyy"
-                   name="dp" [ngModelOptions]="{standalone: true}" [(ngModel)]="currentTimesheet.dateDt" id="dateJour" ngbDatepicker #ddb="ngbDatepicker">
+                   name="dp" [ngModelOptions]="{standalone: true}"
+                   [(ngModel)]="currentTimesheet.dateDt"
+                   id="dateJour" ngbDatepicker #ddb="ngbDatepicker"
+                   required>
           <button  (click)="ddb.toggle()" type="button">
             <i class="fa fa-calendar" aria-hidden="true"></i>
           </button>
@@ -25,7 +30,11 @@
       </div>
       <div class="col-md-6">
         <label for="heureDebutId" class="col-sm-3 col-form-label">Début journée</label>
-        <input class="col-sm-3" style=" border: 1px solid #868e96" [ngModelOptions]="{standalone: true}" [(ngModel)]="currentTimesheet.heureDebutStr" id="heureDebutId" type="time"/>
+        <input class="col-sm-3" style="border: 1px solid #868e96"
+               [ngModelOptions]="{standalone: true}"
+               [(ngModel)]="currentTimesheet.heureDebutStr"
+               id="heureDebutId" type="time"
+               required/>
       </div>
     </div>
     <div class="row">
@@ -33,7 +42,11 @@
       </div>
       <div class="col-md-6">
         <label for="heureFinId" class="col-sm-3 col-form-label">Fin journée</label>
-        <input class="col-sm-3" style=" border: 1px solid #868e96" [ngModelOptions]="{standalone: true}" [(ngModel)]="currentTimesheet.heureFinStr" id="heureFinId" type="time"/>
+        <input class="col-sm-3" style=" border: 1px solid #868e96"
+               [ngModelOptions]="{standalone: true}"
+               [(ngModel)]="currentTimesheet.heureFinStr"
+               id="heureFinId" type="time"
+               required/>
       </div>
     </div>
     <div class="row">
@@ -41,7 +54,11 @@
       </div>
       <div class="col-md-6">
         <label for="heurePauseDebutId" class="col-sm-3 col-form-label">Début pause</label>
-        <input class="col-sm-3" style=" border: 1px solid #868e96" [ngModelOptions]="{standalone: true}" [(ngModel)]="currentTimesheet.heureDebutPauseStr" id="heurePauseDebutId" type="time"/>
+        <input class="col-sm-3" style=" border: 1px solid #868e96"
+               [ngModelOptions]="{standalone: true}"
+               [(ngModel)]="currentTimesheet.heureDebutPauseStr"
+               id="heurePauseDebutId" type="time"
+               required/>
       </div>
     </div>
     <div class="row">
@@ -49,7 +66,12 @@
       </div>
       <div class="col-md-6">
         <label for="heureFinPauseId" class="col-sm-3 col-form-label">Fin pause</label>
-        <input class="col-sm-3" style=" border: 1px solid #868e96" [ngModelOptions]="{standalone: true}" [(ngModel)]="currentTimesheet.heureFinPauseStr" id="heureFinPauseId" type="time"/>
+        <input class="col-sm-3"
+               style=" border: 1px solid #868e96"
+               [ngModelOptions]="{standalone: true}"
+               [(ngModel)]="currentTimesheet.heureFinPauseStr"
+               id="heureFinPauseId"
+               type="time" required/>
       </div>
     </div>
     <div class="row">
@@ -69,37 +91,49 @@
     <div class="row row voffset3">
       <div class="col-md-3"></div>
       <div class="col-md-6">
-        <button style="margin-left: 15px" (click)="onAdd()" class="btn btn-success">Ajouter</button>
+        <button style="margin-left: 15px" type="submit" class="btn btn-success">Ajouter</button>
       </div>
     </div>
-    <div class="row voffset3">
-      <table class="table  table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Client</th>
-            <th scope="col">Chantier</th>
-            <th scope="col">Date du jour</th>
-            <th scope="col">Début de journée</th>
-            <th scope="col">Fin de journée</th>
-            <th scope="col">Début de pause</th>
-            <th scope="col">Fin de pause</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let timesheet of recordedTimesheets" class="table-primary">
-            <th scope="row">{{timesheet.nomClient}}</th>
-            <td>{{timesheet.nomChantier}}</td>
-            <td>{{formatDate(timesheet.dateDt) }}</td>
-            <td>{{timesheet.heureDebutStr}}</td>
-            <td>{{timesheet.heureFinStr}}</td>
-            <td>{{timesheet.heureDebutPauseStr}}</td>
-            <td>{{timesheet.heureFinPauseStr}}</td>
-            <td><button class="btn btn-default" (click)="onModif(timesheet.nomClient)">Modification</button></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
   </form>
+
+
+  <div class="row voffset3">
+    <table class="table  table-hover">
+      <thead>
+      <tr>
+        <th scope="col">Client</th>
+        <th scope="col">Chantier</th>
+        <th scope="col">Date du jour</th>
+        <th scope="col">Début de journée</th>
+        <th scope="col">Fin de journée</th>
+        <th scope="col">Début de pause</th>
+        <th scope="col">Fin de pause</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let timesheet of recordedTimesheets" class="table-primary">
+        <th scope="row">{{timesheet.nomClient}}</th>
+        <td>{{timesheet.nomChantier}}</td>
+        <td>{{formatDateForDisplay(timesheet.dateDt) }}</td>
+        <td>{{timesheet.heureDebutStr}}</td>
+        <td>{{timesheet.heureFinStr}}</td>
+        <td>{{timesheet.heureDebutPauseStr}}</td>
+        <td>{{timesheet.heureFinPauseStr}}</td>
+        <td><button class="btn btn-default" (click)="onModif(timesheet.id)">Modification</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <button style="margin-left: 15px" (click)="onValidate()" class="btn btn-success">Valider</button>
+    </div>
+  </div>
+  <div class="voffset3">
+  </div>
+  <div  [ngClass]="{'alert alert-success': !error && submitted, 'alert alert-danger': error && submitted}">
+    {{displayMessage}}
+  </div>
 </div>

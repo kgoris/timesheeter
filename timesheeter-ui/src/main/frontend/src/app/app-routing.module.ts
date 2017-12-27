@@ -10,6 +10,7 @@ import {LoginComponent} from "./login/login.component";
 import {ChangePasswordComponent} from "./change-password/change-password.component";
 import {AdminComponent} from "./admin/admin.component";
 import {TimesheetComponent} from "./timesheet/timesheet.component";
+import {DetailComponent} from "./detail/detail.component";
 
 export const routes: Routes = [
   {
@@ -31,6 +32,11 @@ export const routes: Routes = [
     path: 'timesheet',
     component: TimesheetComponent,
     canActivate: [LoginGuard]
+  },
+  {
+    path: 'detail',
+    component: DetailComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: 'admin',

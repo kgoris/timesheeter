@@ -24,7 +24,10 @@ export class TimesheetComponent implements OnInit {
   allChantiers : Chantier[];
   form: FormGroup;
   dynamicId:any;
-
+  localTimesheetId : number;
+  submitted: boolean;
+  displayMessage: string;
+  error : boolean;
 
   constructor(private businessService:BusinessService,
               private formBuilder: FormBuilder,
@@ -34,6 +37,9 @@ export class TimesheetComponent implements OnInit {
     this.form = this.formBuilder.group({});
     this.currentTimesheet = new Timesheet();
     this.recordedTimesheets = [];
+    this.localTimesheetId = 0;
+    this.submitted = false;
+    this.error = false;
     this.businessService.getAllCients().subscribe(
       value => {
         this.allClients = value as Client[];
@@ -70,7 +76,20 @@ export class TimesheetComponent implements OnInit {
     }
   }
 
-  formatDate(date:any){
+  formatDateForDisplay(date:any){
+    let day = date.day;
+    let month = date.month;
+    if(day.length ===1){
+      day = '0' + day;
+    }
+    if(month.length === 1){
+      month = '0' + month;
+    }
+
+    return day + '/' + month + '/' + date.year;
+  }
+
+  formatDateForServer(date:any){
     let day = date.day;
     let month = date.month;
     if(day.length ===1){
@@ -82,19 +101,48 @@ export class TimesheetComponent implements OnInit {
 
     return date.year + '-' + month + '-' + day;
   }
-  onAdd(){
+  onSubmit(){
+    this.error = false;
+    this.submitted = false;
+    this.displayMessage = "";
     this.recordedTimesheets.push(this.currentTimesheet);
     this.currentTimesheet = new Timesheet();
+    this.currentTimesheet.id = this.localTimesheetId;
+    this.localTimesheetId += 1;
   }
-  onModif(nomClient:string){
+  onModif(timesheetId:number){
     /*
     TODO: générer un id par timesheet!!!
      */
     for(let timesheet of this.recordedTimesheets){
-      if(timesheet.nomClient === nomClient){
+      if(timesheet.id === timesheetId){
         this.currentTimesheet = timesheet;
         this.recordedTimesheets = this.recordedTimesheets.filter(x => x !== timesheet);
       }
     }
   }
+
+  setDates(){
+    for(let timesheet of this.recordedTimesheets){
+      timesheet.dateStr = this.formatDateForServer(timesheet.dateDt);
+    }
+  }
+  onValidate(){
+
+    this.setDates();
+    this.businessService.postRecordedTimesheets(this.recordedTimesheets).subscribe(
+      () => {
+        this.submitted = true;
+        this.recordedTimesheets = []
+        this.displayMessage = "Vos prestation ont été correctement enregistrées.";
+        console.info("Business service recordedTimesheets success");
+      }
+      , error => {
+        this.displayMessage = "Une erreur s'est produite. Veuillez en informer un administrateur.";
+        this.error = true;
+        console.error("Business service - all clients - an error happened")
+      }
+    )
+  }
+
 }

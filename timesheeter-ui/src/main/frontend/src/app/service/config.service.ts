@@ -30,6 +30,12 @@ export class ConfigService {
 
   private _all_chantiers_url = this._chantier_url + '/all';
 
+  private _recorded_timesheet = this._api_url + '/recordedtimesheets';
+
+  private _timesheet_url = this._api_url + '/timesheet';
+
+  private _all_timesheets_url = this._timesheet_url + '/all';
+
   get reset_credentials_url(): string {
       return this._reset_credentials_url;
   }
@@ -66,4 +72,11 @@ export class ConfigService {
     return this._all_chantiers_url;
   }
 
+  get recorded_timesheets_url(): string{
+    return this._recorded_timesheet;
+  }
+
+  get timesheets_url(): string{
+    return this._all_timesheets_url;
+  }
 }
