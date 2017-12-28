@@ -8,3 +8,6 @@ INSERT INTO chantier (nom) VALUEs ('chant01');
 INSERT INTO chantier (nom) VALUEs ('chant02');
 INSERT INTO chantier (nom) VALUEs ('chant03');
 INSERT INTO chantier (nom) VALUEs ('chant04');
+
+
+select week(date), SUBDATE(date, WEEKDAY(date)), ADDDATE(date, 6 - WEEKDAY(date)), date FROM timesheet;

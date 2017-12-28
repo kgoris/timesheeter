@@ -19,4 +19,10 @@ public class TimesheetDTO {
     private String nomClient;
     private String nomChantier;
     private String nomUtilisateur;
+    private String numeroSemaine;
+    private String debutSemaine;
+    private String finSemaine;
+    private String mois;
+    private String annee;
+    private String totalHeures;
 }

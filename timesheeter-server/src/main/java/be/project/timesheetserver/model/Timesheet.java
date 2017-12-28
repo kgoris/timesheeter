@@ -47,4 +47,6 @@ public class Timesheet {
     @Temporal(TemporalType.TIME)
     private Date heurePauseFin;
 
+    private Double totalHeures;
+
 }

@@ -7,10 +7,7 @@ import be.project.timesheetserver.service.BusinessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
@@ -48,5 +45,11 @@ public class BusinessController {
     @PreAuthorize("hasRole('ADMIN')")
     public List<TimesheetDTO> allTimesheet(){
         return businessService.findAllTimesheetDTO();
+    }
+
+    @RequestMapping("timesheet/week/{usedId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<TimesheetDTO> timesheetByWeek(@PathVariable(name="usedId") Integer userId){
+        return businessService.findTimesheetsByUserIdGroupByWeek(userId);
     }
 }

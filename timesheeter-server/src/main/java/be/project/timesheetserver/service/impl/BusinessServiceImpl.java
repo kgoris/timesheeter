@@ -9,10 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,16 @@ public class BusinessServiceImpl implements BusinessService {
     private final ChantierRepository chantierRepository;
     private final ClientRepository clientRepository;
 
+    private void computeTotalHeure(Timesheet timesheet){
+        Double heureDebut = ((Long)timesheet.getHeureDebut().getTime()).doubleValue();
+        Double heureFin = ((Long)timesheet.getHeureFin().getTime()).doubleValue();
+        Double heurePauseDebut = ((Long)timesheet.getHeurePauseDebut().getTime()).doubleValue();
+        Double heurePauseFin = ((Long)timesheet.getHeurePauseFin().getTime()).doubleValue();
+        Double diffHeures =  (heureFin - heureDebut) / (1000 * 60 *60) ;
+        Double diffHeuresPause = (heurePauseFin - heurePauseDebut) / (1000 * 60 *60);
+        timesheet.setTotalHeures(diffHeures - diffHeuresPause);
+    }
+
     @Override
     public void manageRecordedTimesheets(Timesheets recordedTimesheets) throws ParseException {
         User currentUser = (User) SecurityContextHolder
@@ -34,13 +45,14 @@ public class BusinessServiceImpl implements BusinessService {
         for(TimesheetDTO timesheetDTO : recordedTimesheets.getTimesheetList()){
             Timesheet timesheet = mapTimesheetDTOToTimesheet(timesheetDTO);
             timesheet.setUser(currentUser);
+            computeTotalHeure(timesheet);
             timesheetRepository.save(timesheet);
         }
     }
 
     @Override
     public Timesheet mapTimesheetDTOToTimesheet(TimesheetDTO timesheetDTO) throws ParseException {
-        SimpleDateFormat formatDateTimesheet = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat formatDateTimesheet = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat formatHeures = new SimpleDateFormat("kk:mm");
         Date dateTimesheet = formatDateTimesheet.parse(timesheetDTO.getDateStr());
         Date heureDebut = formatHeures.parse(timesheetDTO.getHeureDebutStr());
@@ -85,5 +97,46 @@ public class BusinessServiceImpl implements BusinessService {
     public List<TimesheetDTO> findAllTimesheetDTO() {
         List<Timesheet> timesheetList = timesheetRepository.findAll();
         return timesheetList.stream().map(aTimesheet -> mapTimesheetToTomesheetDTO(aTimesheet)).collect(Collectors.toList());
+    }
+
+    private String mapTimeToString(Time time){
+        String[] timesplitted = time.toString().split(":");
+        return timesplitted[0] + ":" + timesplitted[1];
+    }
+    private TimesheetDTO mapQueryObjectToTimesheetDTO(Object record){
+        TimesheetDTO timesheetDTO = null;
+        Object[] recordArray = (Object[]) record;
+        SimpleDateFormat formatDateTimesheet = new SimpleDateFormat("yyyy-MM-dd");
+        String timesheetDate = formatDateTimesheet.format(recordArray[0]);
+        String weekBeginDate = formatDateTimesheet.format(recordArray[4]);
+        String weekEndDate = formatDateTimesheet.format(recordArray[5]);
+        String heureDebut = mapTimeToString((Time)recordArray[6]);
+        String heureFin = mapTimeToString((Time)recordArray[7]);
+        String heureDebutPause = mapTimeToString((Time)recordArray[8]);
+        String heureFinPause = mapTimeToString((Time)recordArray[9]);
+        timesheetDTO = TimesheetDTO.builder()
+                .dateStr(timesheetDate)
+                .mois(((Integer)recordArray[1]).toString())
+                .annee(((Integer)recordArray[2]).toString())
+                .numeroSemaine(((Integer)recordArray[3]).toString())
+                .debutSemaine(weekBeginDate)
+                .finSemaine(weekEndDate)
+                .heureDebutStr(heureDebut)
+                .heureFinStr(heureFin)
+                .heureDebutPauseStr(heureDebutPause)
+                .heureFinPauseStr(heureFinPause)
+                .totalHeures(((Double)recordArray[10]).toString())
+                .nomClient((String) recordArray[11])
+                .nomChantier((String) recordArray[12])
+                .nomUtilisateur((String) recordArray[13] + " " + (String) recordArray[14])
+                .build();
+        return timesheetDTO;
+    }
+
+    @Override
+    public List<TimesheetDTO> findTimesheetsByUserIdGroupByWeek(Integer userId) {
+        Object res = timesheetRepository.findByWeekDay(userId);
+        List<Object> records = (ArrayList<Object>) res;
+        return records.stream().map(x -> mapQueryObjectToTimesheetDTO(x)).collect(Collectors.toList());
     }
 }

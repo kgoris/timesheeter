@@ -140,6 +140,7 @@ export class TimesheetComponent implements OnInit {
       , error => {
         this.displayMessage = "Une erreur s'est produite. Veuillez en informer un administrateur.";
         this.error = true;
+        this.submitted = true;
         console.error("Business service - all clients - an error happened")
       }
     )

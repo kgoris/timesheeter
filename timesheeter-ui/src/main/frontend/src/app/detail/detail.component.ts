@@ -17,11 +17,32 @@ export class DetailComponent implements OnInit {
   ngOnInit() {
     this.businessService.getAllTimesheets().subscribe(
       value => {
+
+
         this.allTimesheets = value as Timesheet[];
+        let dataSource = this.allTimesheets.map(
+          x => [
+            x.nomUtilisateur,
+            x.nomClient,
+            x.nomChantier,
+            x.dateStr,
+            x.heureDebutStr,
+            x.heureFinStr,
+            x.heureDebutPauseStr,
+            x.heureFinPauseStr]);
         $('#allTimesheetId').DataTable({
-          data: this.allTimesheets,
+          data: dataSource,
+          columns: [
+            { title: "Utilisateur" },
+            { title: "Client" },
+            { title: "Chantier" },
+            { title: "date" },
+            { title: "Heure début" },
+            { title: "Heure fin" },
+            { title: "Heure début pause" },
+            { title: "Heure fin pause" }
+          ]
         });
-        console.info("ok")
       }
       , error => {
         console.error("Business service - all timesheets - an error happened")

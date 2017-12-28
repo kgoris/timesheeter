@@ -12,4 +12,5 @@ public interface BusinessService {
     Timesheet mapTimesheetDTOToTimesheet(TimesheetDTO timesheetDTO) throws ParseException;
     TimesheetDTO mapTimesheetToTomesheetDTO(Timesheet timesheet);
     List<TimesheetDTO> findAllTimesheetDTO();
+    List<TimesheetDTO> findTimesheetsByUserIdGroupByWeek(Integer userId);
 }

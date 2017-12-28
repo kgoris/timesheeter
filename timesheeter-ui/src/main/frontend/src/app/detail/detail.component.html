@@ -1,30 +1,6 @@
 <div class="row voffset3">
-  <table class="table  table-hover" id="allTimesheetId">
-    <thead>
-    <tr>
-      <th scope="col">Utilisateur</th>
-      <th scope="col">Client</th>
-      <th scope="col">Chantier</th>
-      <th scope="col">Date du jour</th>
-      <th scope="col">Début de journée</th>
-      <th scope="col">Fin de journée</th>
-      <th scope="col">Début de pause</th>
-      <th scope="col">Fin de pause</th>
-      <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let timesheet of allTimesheets" class="table-primary">
-      <th scope="row">{{timesheet.nomUtilisateur}}</th>
-      <th scope="row">{{timesheet.nomClient}}</th>
-      <td>{{timesheet.nomChantier}}</td>
-      <td>{{timesheet.dateStr}}</td>
-      <td>{{timesheet.heureDebutStr}}</td>
-      <td>{{timesheet.heureFinStr}}</td>
-      <td>{{timesheet.heureDebutPauseStr}}</td>
-      <td>{{timesheet.heureFinPauseStr}}</td>
-    </tr>
-    </tbody>
+  <table  id="allTimesheetId">
+
   </table>
 </div>
 
