@@ -11,4 +11,10 @@ export class Timesheet{
   nomClient: string;
   nomChantier: string;
   nomUtilisateur: string;
+  numeroSemaine: number;
+  debutSemaine: string;
+  finSemaine: string;
+  mois: string;
+  annee: string;
+  totalHeures : string;
 }

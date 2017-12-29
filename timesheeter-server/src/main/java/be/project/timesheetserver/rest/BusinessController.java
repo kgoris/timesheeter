@@ -3,6 +3,7 @@ package be.project.timesheetserver.rest;
 import be.project.timesheetserver.model.*;
 import be.project.timesheetserver.repository.ChantierRepository;
 import be.project.timesheetserver.repository.ClientRepository;
+import be.project.timesheetserver.repository.UserRepository;
 import be.project.timesheetserver.service.BusinessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -20,6 +21,8 @@ public class BusinessController {
 
     private final ChantierRepository chantierRepository;
 
+    private final UserRepository userRepository;
+
     private final BusinessService businessService;
 
     @RequestMapping("/client/all")
@@ -34,7 +37,6 @@ public class BusinessController {
         return chantierRepository.findAll();
     }
 
-
     @PostMapping("/recordedtimesheets")
     @PreAuthorize("hasRole('USER')")
     public void postRecordedTimesheet(@RequestBody Timesheets recordedTimesheets) throws ParseException {
@@ -47,9 +49,21 @@ public class BusinessController {
         return businessService.findAllTimesheetDTO();
     }
 
-    @RequestMapping("timesheet/week/{usedId}")
+    @RequestMapping("timesheet/user/{usedId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<TimesheetDTO> timesheetByWeek(@PathVariable(name="usedId") Integer userId){
-        return businessService.findTimesheetsByUserIdGroupByWeek(userId);
+    public List<TimesheetDTO> timesheetByUser(@PathVariable(name="usedId") Integer userId){
+        return businessService.findTimesheetsByUserId(userId);
+    }
+
+    @RequestMapping("timesheet/client/{nomClient}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<TimesheetDTO> timesheetByClient(@PathVariable(name="nomClient") String nomClient){
+        return businessService.findTimesheetsByClient(nomClient);
+    }
+
+    @RequestMapping("timesheet/chantier/{nomChantier}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<TimesheetDTO> timesheetByChantier(@PathVariable(name="nomChantier") String nomChantier){
+        return businessService.findTimesheetsByChantier(nomChantier);
     }
 }

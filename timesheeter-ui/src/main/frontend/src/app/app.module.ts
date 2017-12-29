@@ -18,6 +18,7 @@ import {ApiService, AuthService, BusinessService, ConfigService, UserService} fr
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { TimesheetComponent } from './timesheet/timesheet.component';
 import { DetailComponent } from './detail/detail.component';
+import { HistoriqueComponent } from './historique/historique.component';
 
 
 
@@ -33,6 +34,7 @@ import { DetailComponent } from './detail/detail.component';
     ForbiddenComponent,
     TimesheetComponent,
     DetailComponent,
+    HistoriqueComponent,
   ],
   imports: [
     BrowserModule,

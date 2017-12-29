@@ -32,7 +32,7 @@ public class UserController {
     private final UserService userService;
 
     @RequestMapping( method = GET, value = "/user/{userId}" )
-    public User loadById( @PathVariable Long userId ) {
+    public User loadById( @PathVariable Integer userId ) {
         return this.userService.findById( userId );
     }
 

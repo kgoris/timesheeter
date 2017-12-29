@@ -11,6 +11,7 @@ import {ChangePasswordComponent} from "./change-password/change-password.compone
 import {AdminComponent} from "./admin/admin.component";
 import {TimesheetComponent} from "./timesheet/timesheet.component";
 import {DetailComponent} from "./detail/detail.component";
+import {HistoriqueComponent} from "./historique/historique.component";
 
 export const routes: Routes = [
   {
@@ -36,6 +37,11 @@ export const routes: Routes = [
   {
     path: 'detail',
     component: DetailComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'historique',
+    component: HistoriqueComponent,
     canActivate: [AdminGuard]
   },
   {

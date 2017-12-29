@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -106,7 +106,7 @@ public class BusinessServiceImpl implements BusinessService {
     private TimesheetDTO mapQueryObjectToTimesheetDTO(Object record){
         TimesheetDTO timesheetDTO = null;
         Object[] recordArray = (Object[]) record;
-        SimpleDateFormat formatDateTimesheet = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatDateTimesheet = new SimpleDateFormat("dd/MM/yyyy");
         String timesheetDate = formatDateTimesheet.format(recordArray[0]);
         String weekBeginDate = formatDateTimesheet.format(recordArray[4]);
         String weekEndDate = formatDateTimesheet.format(recordArray[5]);
@@ -134,8 +134,22 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public List<TimesheetDTO> findTimesheetsByUserIdGroupByWeek(Integer userId) {
-        Object res = timesheetRepository.findByWeekDay(userId);
+    public List<TimesheetDTO> findTimesheetsByUserId(Integer userId) {
+        Object res = timesheetRepository.findByUser(userId);
+        List<Object> records = (ArrayList<Object>) res;
+        return records.stream().map(x -> mapQueryObjectToTimesheetDTO(x)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TimesheetDTO> findTimesheetsByClient(String nomClient) {
+        Object res = timesheetRepository.findByClient(nomClient);
+        List<Object> records = (ArrayList<Object>) res;
+        return records.stream().map(x -> mapQueryObjectToTimesheetDTO(x)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TimesheetDTO> findTimesheetsByChantier(String nomChantier) {
+        Object res = timesheetRepository.findByChantier(nomChantier);
         List<Object> records = (ArrayList<Object>) res;
         return records.stream().map(x -> mapQueryObjectToTimesheetDTO(x)).collect(Collectors.toList());
     }

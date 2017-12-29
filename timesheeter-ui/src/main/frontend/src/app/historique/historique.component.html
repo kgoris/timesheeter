@@ -1,0 +1,106 @@
+<form class="form-vertical"  [formGroup]="form"
+      (ngSubmit)="onSubmit()" #timesheetForm="ngForm"
+      ngNativeValidate>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <h2>Historique</h2>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-2">
+      <label for="historyType" class="col-sm-4">Type:</label>
+      <select (change)="onSelectFilter()" name="chosenHistoryType" id="historyType" [(ngModel)]="chosenHistoryType" [ngModelOptions]="{standalone: true}">
+        <option value="" ></option>
+        <option *ngFor="let historyType of historyTypes">
+          {{ historyType }}
+        </option>
+      </select>
+    </div>
+    <div class="col-3" *ngIf="chosenHistoryType && chosenHistoryType === user_const">
+      <label for="selectUser" class="col-sm-5">Utilisateur:</label>
+      <select (change)="onSelectFilter()" name="chosenUtilisateur" id="selectUser" [(ngModel)]="chosenUtilisateur" [ngModelOptions]="{standalone: true}">
+        <option value="" ></option>
+        <option [ngValue] = "user" *ngFor="let user of allUtilisateur">
+          {{ user.firstname + " " + user.lastname }}
+        </option>
+      </select>
+    </div>
+    <div class="col-2" *ngIf="chosenHistoryType && chosenHistoryType === client_const">
+      <label for="selectClient" class="col-sm-5">Client:</label>
+      <select (change)="onSelectFilter()" name="chosenClient" id="selectClient" [(ngModel)]="chosenClient" [ngModelOptions]="{standalone: true}">
+        <option value="" ></option>
+        <option *ngFor="let client of allClients">
+          {{ client.nom }}
+        </option>
+      </select>
+    </div>
+    <div class="col-3" *ngIf="chosenHistoryType && chosenHistoryType === chantier_const">
+      <label for="selectChantier" class="col-sm-5">Chantier:</label>
+      <select (change)="onSelectFilter()" name="chosenChantier" id="selectChantier" [(ngModel)]="chosenChantier" [ngModelOptions]="{standalone: true}">
+        <option value="" ></option>
+        <option *ngFor="let chantier of allChantiers">
+          {{ chantier.nom }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-3" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType">
+      <label for="selectSortType" class="col-sm-5">Trier par:</label>
+      <select (change)="onSelectFilter()" name="chosenSortType" id="selectSortType" [(ngModel)]="chosenSortType" [ngModelOptions]="{standalone: true}">
+        <option value="" ></option>
+        <option *ngFor="let sortType of sortTypes">
+          {{ sortType}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-3" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType === mois_const">
+      <label for="selectMois" class="col-sm-3">Mois:</label>
+      <select name="chosenSortType" (change)="onSelectMois()" id="selectMois" [(ngModel)]="chosenMonth" [ngModelOptions]="{standalone: true}">
+        <option value="" ></option>
+        <option *ngFor="let month of allMonth">
+          {{ month}}
+        </option>
+      </select>
+    </div>
+    <div class="col-3" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType === semaine_const">
+      <label for="selectSemaine" class="col-sm-3">Semaine:</label>
+      <select (change)="onSelectSemaine()" name="chosenUtilisateur" id="selectSemaine" [(ngModel)]="chosenSemaine" [ngModelOptions]="{standalone: true}">
+        <option value="" ></option>
+        <option [ngValue] = "semaine" *ngFor="let semaine of allSemaines">
+          {{ semaine.debutSemaine + " - " + semaine.finSemaine }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="allTimesheet" class="row voffset5">
+    <table class="table  table-hover">
+      <thead>
+      <tr>
+        <th scope="col">Client</th>
+        <th scope="col">Chantier</th>
+        <th scope="col">Date du jour</th>
+        <th scope="col">Début de journée</th>
+        <th scope="col">Fin de journée</th>
+        <th scope="col">Début de pause</th>
+        <th scope="col">Fin de pause</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let timesheet of allTimesheet" class="table-primary">
+        <th scope="row">{{timesheet.nomClient}}</th>
+        <td>{{timesheet.nomChantier}}</td>
+        <td>{{timesheet.dateStr }}</td>
+        <td>{{timesheet.heureDebutStr}}</td>
+        <td>{{timesheet.heureFinStr}}</td>
+        <td>{{timesheet.heureDebutPauseStr}}</td>
+        <td>{{timesheet.heureFinPauseStr}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</form>

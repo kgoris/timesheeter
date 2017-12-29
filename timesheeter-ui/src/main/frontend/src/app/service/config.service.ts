@@ -36,6 +36,12 @@ export class ConfigService {
 
   private _all_timesheets_url = this._timesheet_url + '/all';
 
+  private _timesheets_by_user = this._timesheet_url + "/user/";
+
+  private _timesheets_by_chantier = this._timesheet_url + "/chantier/";
+
+  private _timesheets_by_client = this._timesheet_url + "/client/";
+
   get reset_credentials_url(): string {
       return this._reset_credentials_url;
   }
@@ -78,5 +84,17 @@ export class ConfigService {
 
   get timesheets_url(): string{
     return this._all_timesheets_url;
+  }
+
+  get timesheet_user(): string {
+    return this._timesheets_by_user;
+  }
+
+  get timesheet_chantier(): string {
+    return this._timesheets_by_chantier;
+  }
+
+  get timesheet_client(): string {
+    return this._timesheets_by_client;
   }
 }

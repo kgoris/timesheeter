@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface UserService {
     void resetCredentials();
-    User findById(Long id);
+    User findById(Integer id);
     User findByUsername(String username);
     List<User> findAll();
 }
