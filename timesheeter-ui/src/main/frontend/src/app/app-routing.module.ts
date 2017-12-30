@@ -20,10 +20,6 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path:'refresh',
-    component: AppComponent,
-  },
-  {
     path: 'login',
     component: LoginComponent,
     canActivate: [GuestGuard]
