@@ -8,13 +8,13 @@
   <div class="collapse navbar-collapse" [ngbCollapse]="!isMenuCollapsed" id="navbarSupportedContent">
 
     <ul class="navbar-nav mr-auto">
-        <li class="nav-item" *ngIf="isAdmin || isUser">
+        <li class="nav-item" *ngIf="hasSignedIn()">
           <a class="nav-link" routerLink="timesheet">Encodage</a>
         </li>
-        <li class="nav-item" *ngIf="isAdmin">
+        <li class="nav-item" *ngIf="isAdmin()">
           <a class="nav-link" routerLink="detail">Détail</a>
         </li>
-        <li class="nav-item" *ngIf="isAdmin">
+        <li class="nav-item" *ngIf="isAdmin()">
           <a class="nav-link" routerLink="historique">Historique</a>
         </li>
     </ul>

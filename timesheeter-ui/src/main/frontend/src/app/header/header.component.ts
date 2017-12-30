@@ -12,8 +12,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class HeaderComponent implements OnInit {
 
   isMenuCollapsed : boolean;
-  isAdmin : boolean;
-  isUser : boolean;
+
 
   constructor(
     private userService: UserService,
@@ -26,10 +25,15 @@ export class HeaderComponent implements OnInit {
     this.isMenuCollapsed = !this.isMenuCollapsed;
   }
   ngOnInit() {
-    this.userService.isAdmin.subscribe(x => this.isAdmin = x);
-    this.userService.isUser.subscribe(x => this.isUser = x);
+    /*this.userService.isAdmin.subscribe(x => this.isAdmin = x);
+    this.userService.isUser.subscribe(x => this.isUser = x);*/
   }
 
+  isAdmin(){
+    if(this.hasSignedIn()){
+      return JSON.stringify(this.userService.currentUser.authorities).search('ROLE_ADMIN') !== -1;
+    }
+  }
   logout() {
     this.authService.logout().subscribe(res => {
       this.router.navigate(['/login']);
