@@ -24,6 +24,17 @@ export class HeaderComponent implements OnInit {
   onClick(){
     this.isMenuCollapsed = !this.isMenuCollapsed;
   }
+
+  onDetail(){
+    this.router.navigate(["detail"]);
+  }
+  onHistorique(){
+    this.router.navigate(["historique"]);
+  }
+  onEncodage(){
+    this.router.navigate(["timesheet"]);
+
+  }
   ngOnInit() {
     /*this.userService.isAdmin.subscribe(x => this.isAdmin = x);
     this.userService.isUser.subscribe(x => this.isUser = x);*/

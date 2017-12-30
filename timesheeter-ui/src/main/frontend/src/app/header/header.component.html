@@ -9,13 +9,13 @@
 
     <ul class="navbar-nav mr-auto">
         <li class="nav-item" *ngIf="hasSignedIn()">
-          <a class="nav-link" routerLink="timesheet">Encodage</a>
+          <a class="nav-link" (click) = "onEncodage()">Encodage</a>
         </li>
         <li class="nav-item" *ngIf="isAdmin()">
-          <a class="nav-link" routerLink="detail">Détail</a>
+          <a class="nav-link" (click)="onDetail()">Détail</a>
         </li>
         <li class="nav-item" *ngIf="isAdmin()">
-          <a class="nav-link" routerLink="historique">Historique</a>
+          <a class="nav-link" (click)="onHistorique()">Historique</a>
         </li>
     </ul>
 
