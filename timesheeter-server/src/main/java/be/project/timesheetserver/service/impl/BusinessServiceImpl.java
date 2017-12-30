@@ -114,22 +114,42 @@ public class BusinessServiceImpl implements BusinessService {
         String heureFin = mapTimeToString((Time)recordArray[7]);
         String heureDebutPause = mapTimeToString((Time)recordArray[8]);
         String heureFinPause = mapTimeToString((Time)recordArray[9]);
-        timesheetDTO = TimesheetDTO.builder()
-                .dateStr(timesheetDate)
-                .mois(((Integer)recordArray[1]).toString())
-                .annee(((Integer)recordArray[2]).toString())
-                .numeroSemaine(((Integer)recordArray[3]).toString())
-                .debutSemaine(weekBeginDate)
-                .finSemaine(weekEndDate)
-                .heureDebutStr(heureDebut)
-                .heureFinStr(heureFin)
-                .heureDebutPauseStr(heureDebutPause)
-                .heureFinPauseStr(heureFinPause)
-                .totalHeures(((Double)recordArray[10]).toString())
-                .nomClient((String) recordArray[11])
-                .nomChantier((String) recordArray[12])
-                .nomUtilisateur((String) recordArray[13] + " " + (String) recordArray[14])
-                .build();
+
+        if(recordArray[1] instanceof Integer) {
+            timesheetDTO = TimesheetDTO.builder()
+                    .dateStr(timesheetDate)
+                    .mois(((Integer) recordArray[1]).toString())
+                    .annee(((Integer) recordArray[2]).toString())
+                    .numeroSemaine(((Integer) recordArray[3]).toString())
+                    .debutSemaine(weekBeginDate)
+                    .finSemaine(weekEndDate)
+                    .heureDebutStr(heureDebut)
+                    .heureFinStr(heureFin)
+                    .heureDebutPauseStr(heureDebutPause)
+                    .heureFinPauseStr(heureFinPause)
+                    .totalHeures(((Double) recordArray[10]).toString())
+                    .nomClient((String) recordArray[11])
+                    .nomChantier((String) recordArray[12])
+                    .nomUtilisateur((String) recordArray[13] + " " + (String) recordArray[14])
+                    .build();
+        }else{
+            timesheetDTO = TimesheetDTO.builder()
+                    .dateStr(timesheetDate)
+                    .mois(((BigInteger) recordArray[1]).toString())
+                    .annee(((BigInteger) recordArray[2]).toString())
+                    .numeroSemaine(((BigInteger) recordArray[3]).toString())
+                    .debutSemaine(weekBeginDate)
+                    .finSemaine(weekEndDate)
+                    .heureDebutStr(heureDebut)
+                    .heureFinStr(heureFin)
+                    .heureDebutPauseStr(heureDebutPause)
+                    .heureFinPauseStr(heureFinPause)
+                    .totalHeures(((Double) recordArray[10]).toString())
+                    .nomClient((String) recordArray[11])
+                    .nomChantier((String) recordArray[12])
+                    .nomUtilisateur((String) recordArray[13] + " " + (String) recordArray[14])
+                    .build();
+        }
         return timesheetDTO;
     }
 

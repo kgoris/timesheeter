@@ -7,6 +7,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Timesheet} from "../modeles/timesheet";
 import {Timesheets} from "../modeles/timesheets";
 import {Semaine} from "../modeles/Semaine";
+import {Time} from "@angular/common";
 
 @Injectable()
 export class BusinessService {
@@ -72,9 +73,19 @@ export class BusinessService {
     return false;
   }
 
-  getSemainesAndMonthWithTimesheetArray(timsheets : Timesheet[]): any{
+  filterIfYearAlreadyInArray(yearToCheck: string, yearArray: string[]): boolean{
+    for(let year of yearArray){
+      if (year === yearToCheck){
+        return true;
+      }
+    }
+    return false;
+  }
+  getSemainesMonthYearWithTimesheetArray(timsheets : Timesheet[]): any{
     let allSemaine: Semaine[] = [];
     let allMonth : string[] = [];
+    let allYears : string [] = [];
+
     for (let timesheet of timsheets){
       let semaine:Semaine = new Semaine();
       semaine.debutSemaine = timesheet.debutSemaine;
@@ -90,13 +101,93 @@ export class BusinessService {
       if(!this.filterIfMonthAlreadyInArray(month, allMonth)){
         allMonth.push(month);
       }
-
+      if(!this.filterIfYearAlreadyInArray(timesheet.annee, allYears)){
+        allYears.push(timesheet.annee);
+      }
     }
+
     return {
       "month" : allMonth,
-      "semaine": allSemaine
+      "semaine": allSemaine,
+      "year": allYears,
     }
   }
 
+  filterTimesheetsByMonth(timsheets: Timesheet[], monthWithYearToFind:string): Timesheet[]{
+    let splittedMonth : string[] = monthWithYearToFind.split("/");
+    let monthToFind : string = splittedMonth[0];
+    let yearToFind: string = splittedMonth[1];
+    let filteredTimesheets : Timesheet[] = [];
 
+    for(let timesheet of timsheets){
+      if(timesheet.mois === monthToFind && timesheet.annee === yearToFind){
+        filteredTimesheets.push(timesheet);
+      }
+    }
+    return filteredTimesheets;
+  }
+
+  filterTimesheetsBySemaine(timesheets: Timesheet[], semaineToFind: Semaine): Timesheet[]{
+    let filteredTimesheets : Timesheet[] = [];
+    for(let timesheet of timesheets){
+      if(parseInt(timesheet.annee) === semaineToFind.annee
+          && parseInt(timesheet.mois) === semaineToFind.mois
+          && timesheet.numeroSemaine === semaineToFind.numeroSemaine){
+        filteredTimesheets.push(timesheet);
+      }
+    }
+
+    return filteredTimesheets;
+  }
+
+  filterTimesheetsByYear(timesheets: Timesheet[], yearToFind: string): Timesheet[]{
+    let filteredTimesheets : Timesheet[] = [];
+    for(let timesheet of timesheets){
+      if(timesheet.annee === yearToFind){
+        filteredTimesheets.push(timesheet);
+      }
+    }
+    return filteredTimesheets;
+  }
+
+  computeHeureAllTimesheets(timesheets: Timesheet[]): string{
+    let totalHeures : string = "0h";
+    let somme : number = 0;
+    for(let timesheet of timesheets){
+      somme += parseFloat(timesheet.totalHeures);
+    }
+    return this.computeHeureOneTimesheet(somme);
+  }
+
+  computeHeureOneTimesheet(somme: number): string{
+    let heures :string = Math.floor(somme).toString();
+    let minutes : string = Math.round(60 * (somme % 1)).toString();
+    return heures + "h" + minutes;
+  }
+
+  private compareTwoHours(left : string[], right: string[]): number{
+    if(parseInt(left[0]) < parseInt(right[0])){
+      return -1;
+    }else if ((parseInt(left[0]) === parseInt(right[0])) && (parseInt(left[1]) < parseInt(right[1]))){
+      return -1
+    }else if((parseInt(left[0]) === parseInt(right[0])) && (parseInt(left[1]) === parseInt(right[1]))){
+      return 0;
+    }else{
+      return 1;
+    }
+  }
+  checkHours(timesheet:Timesheet):boolean{
+    let separator = ":";
+    if(this.compareTwoHours(timesheet.heureDebutStr.split(separator), timesheet.heureDebutPauseStr.split(separator)) >= 0){
+      return false;
+    }
+    if(this.compareTwoHours(timesheet.heureDebutPauseStr.split(separator), timesheet.heureFinPauseStr.split(separator)) > 0){
+      return false;
+    }
+    if(this.compareTwoHours(timesheet.heureFinPauseStr.split(separator), timesheet.heureFinStr.split(separator)) >= 0){
+      return false;
+    }
+
+    return true;
+  }
 }

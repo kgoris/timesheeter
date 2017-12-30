@@ -6,17 +6,19 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" [ngbCollapse]="!isMenuCollapsed" id="navbarSupportedContent">
+
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="timesheet">Encodage</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="detail">Détail</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="historique">Historique</a>
-      </li>
+        <li class="nav-item" *ngIf="isAdmin || isUser">
+          <a class="nav-link" routerLink="timesheet">Encodage</a>
+        </li>
+        <li class="nav-item" *ngIf="isAdmin">
+          <a class="nav-link" routerLink="detail">Détail</a>
+        </li>
+        <li class="nav-item" *ngIf="isAdmin">
+          <a class="nav-link" routerLink="historique">Historique</a>
+        </li>
     </ul>
+
     <div class="right">
 
       <button *ngIf="!hasSignedIn()" class="btn btn-secondary my-2 my-sm-0" routerLink="/login" >

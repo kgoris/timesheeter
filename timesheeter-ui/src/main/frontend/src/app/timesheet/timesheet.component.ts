@@ -27,6 +27,7 @@ export class TimesheetComponent implements OnInit {
   localTimesheetId : number;
   submitted: boolean;
   displayMessage: string;
+  displayValidationMessage : string;
   error : boolean;
 
   constructor(private businessService:BusinessService,
@@ -101,19 +102,54 @@ export class TimesheetComponent implements OnInit {
 
     return date.year + '-' + month + '-' + day;
   }
-  onSubmit(){
+
+  checkHours(timesheet:Timesheet):boolean{
+    return this.businessService.checkHours(timesheet);
+  }
+
+  checkCustomerInCustomerList(){
+    for(let client of this.allClients){
+      if(client.nom === this.currentTimesheet.nomClient){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  checkChantierInChantierList(){
+    for(let chantier of this.allChantiers){
+      if(chantier.nom === this.currentTimesheet.nomChantier){
+        return true;
+      }
+    }
+    return false;
+  }
+  onSubmit() {
+    if (!this.checkHours(this.currentTimesheet)) {
+      this.displayValidationMessage = "Erreur dans l'encodage des heures.";
+      return;
+    }
+    if(!this.checkCustomerInCustomerList()){
+      this.displayValidationMessage = "Veuillez indiquer un client valide.";
+      return;
+    }
+    if(!this.checkChantierInChantierList()){
+      this.displayValidationMessage = "Veuillez indiquer un chantier valide";
+      return;
+    }
+
     this.error = false;
     this.submitted = false;
     this.displayMessage = "";
+    this.displayValidationMessage = "";
+
     this.recordedTimesheets.push(this.currentTimesheet);
     this.currentTimesheet = new Timesheet();
     this.currentTimesheet.id = this.localTimesheetId;
     this.localTimesheetId += 1;
+
   }
   onModif(timesheetId:number){
-    /*
-    TODO: générer un id par timesheet!!!
-     */
     for(let timesheet of this.recordedTimesheets){
       if(timesheet.id === timesheetId){
         this.currentTimesheet = timesheet;

@@ -1,3 +1,4 @@
+
 <form class="form-vertical"  [formGroup]="form"
       (ngSubmit)="onSubmit()" #timesheetForm="ngForm"
       ngNativeValidate>
@@ -55,31 +56,49 @@
       </select>
     </div>
   </div>
+
   <div class="row voffset3">
     <div class="col-3" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType === mois_const">
       <label for="selectMois" class="col-sm-3">Mois:</label>
-      <select name="chosenSortType" (change)="onSelectMois()" id="selectMois" [(ngModel)]="chosenMonth" [ngModelOptions]="{standalone: true}">
+      <select name="chosenMois" (change)="onSelectMois()" id="selectMois" [(ngModel)]="chosenMonth" [ngModelOptions]="{standalone: true}">
         <option value="" ></option>
         <option *ngFor="let month of allMonth">
           {{ month}}
         </option>
       </select>
     </div>
-    <div class="col-3" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType === semaine_const">
+    <div class="col-4" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType && chosenSortType === semaine_const">
       <label for="selectSemaine" class="col-sm-3">Semaine:</label>
-      <select (change)="onSelectSemaine()" name="chosenUtilisateur" id="selectSemaine" [(ngModel)]="chosenSemaine" [ngModelOptions]="{standalone: true}">
+      <select (change)="onSelectSemaine()" name="chosenSemaine" id="selectSemaine" [(ngModel)]="chosenSemaine" [ngModelOptions]="{standalone: true}">
         <option value="" ></option>
         <option [ngValue] = "semaine" *ngFor="let semaine of allSemaines">
           {{ semaine.debutSemaine + " - " + semaine.finSemaine }}
         </option>
       </select>
     </div>
+    <div class="col-4" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType && chosenSortType === year_const">
+      <label for="selectAnnee" class="col-sm-3">Année:</label>
+      <select (change)="onSelectYear()" name="chosenYear" id="selectAnnee" [(ngModel)]="chosenYear" [ngModelOptions]="{standalone: true}">
+        <option value="" ></option>
+        <option [ngValue] = "year" *ngFor="let year of allYear">
+          {{ year }}
+        </option>
+      </select>
+    </div>
   </div>
 
-  <div *ngIf="allTimesheet" class="row voffset5">
+  <div class="row" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType">
+    <div class="col-md-9">
+    </div>
+    <div class="col-md-3">
+      Total heures: {{totalHeures}}
+    </div>
+  </div>
+  <div *ngIf="filteredTimesheets" class="row voffset1">
     <table class="table  table-hover">
       <thead>
       <tr>
+        <th scope="col">Utilisateur</th>
         <th scope="col">Client</th>
         <th scope="col">Chantier</th>
         <th scope="col">Date du jour</th>
@@ -87,18 +106,20 @@
         <th scope="col">Fin de journée</th>
         <th scope="col">Début de pause</th>
         <th scope="col">Fin de pause</th>
-        <th scope="col"></th>
+        <th scope="col">Nbr Heures</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let timesheet of allTimesheet" class="table-primary">
-        <th scope="row">{{timesheet.nomClient}}</th>
+      <tr *ngFor="let timesheet of filteredTimesheets" class="table-primary">
+        <th scope="row">{{timesheet.nomUtilisateur}}</th>
+        <td>{{timesheet.nomClient}}</td>
         <td>{{timesheet.nomChantier}}</td>
         <td>{{timesheet.dateStr }}</td>
         <td>{{timesheet.heureDebutStr}}</td>
         <td>{{timesheet.heureFinStr}}</td>
         <td>{{timesheet.heureDebutPauseStr}}</td>
         <td>{{timesheet.heureFinPauseStr}}</td>
+        <td>{{computeTotalTimesheet(timesheet)}}</td>
       </tr>
       </tbody>
     </table>

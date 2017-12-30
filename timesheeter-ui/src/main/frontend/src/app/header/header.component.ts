@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AuthService, UserService} from "../service";
 import {Router} from "@angular/router";
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
+
 })
 export class HeaderComponent implements OnInit {
 
   isMenuCollapsed : boolean;
+  isAdmin : boolean;
+  isUser : boolean;
 
   constructor(
     private userService: UserService,
@@ -22,6 +26,8 @@ export class HeaderComponent implements OnInit {
     this.isMenuCollapsed = !this.isMenuCollapsed;
   }
   ngOnInit() {
+    this.userService.isAdmin.subscribe(x => this.isAdmin = x);
+    this.userService.isUser.subscribe(x => this.isUser = x);
   }
 
   logout() {

@@ -83,7 +83,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       .delay(1000)
       .subscribe(data => {
           this.userService.getMyInfo().subscribe();
+
           this.router.navigate([this.returnUrl]);
+
+
         },
         error => {
           this.submitted = false;

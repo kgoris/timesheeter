@@ -7,9 +7,11 @@ import {UserService} from "./service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
+
   constructor(private userService:UserService){
 
   }
+
   ngOnInit(): void {
     this.userService.initUser()
   }
