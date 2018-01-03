@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import {BusinessService} from "../service";
+import {Chantier} from "../modeles/chantier";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {Client} from "../modeles/client";
 
 @Component({
   selector: 'app-client-detail',
@@ -7,9 +12,64 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClientDetailComponent implements OnInit {
 
-  constructor() { }
+  private form: FormGroup;
+  private currentClient: Client;
+  private displayMessage : string;
+  private error: boolean;
+  private submitted : boolean;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private businessService: BusinessService) { }
 
   ngOnInit() {
+    this.currentClient = new Client();
+    this.currentClient.new = true;
+
+    this.error = false;
+    this.submitted = false;
+    this.form = this.formBuilder.group({});
+    this.route.params
+      .switchMap((params: Params) => this.businessService.getClientById(+params['id']))
+      .subscribe(
+        (client: Client) => {
+          this.currentClient = client;
+        }
+      );
+  }
+
+  onSubmit(){
+
+    this.submitted = true;
+    if(this.currentClient.new){
+      this.businessService.createClient(this.currentClient).subscribe(
+        () => {
+          this.displayMessage = "Le client a été créé";
+        },
+        error => {
+          this.displayMessage = "Création du client - erreur";
+          this.error = true;
+          console.error(this.displayMessage)
+        }
+      );
+    } else{
+      this.businessService.updateClient(this.currentClient).subscribe(
+        () => {
+          this.displayMessage = "le client a été modifié";
+        },
+        error => {
+          this.displayMessage = "Modification du client - erreur";
+          this.error = true;
+          console.error(this.displayMessage)
+        }
+      );
+    }
+  }
+
+  onReturn(){
+    this.router.navigate(['/clients']);
   }
 
 }

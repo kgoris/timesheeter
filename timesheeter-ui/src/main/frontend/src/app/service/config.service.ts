@@ -28,9 +28,17 @@ export class ConfigService {
 
   private _client_url = this._api_url + '/client';
 
+  private _new_client_url = this._client_url + '/new';
+
+  private _update_client_url = this._client_url + '/update';
+
   private _all_clients_url = this._client_url + '/all';
 
   private _chantier_url = this._api_url + '/chantier';
+
+  private _new_chantier_url = this._chantier_url + '/new';
+
+  private _update_chantier_url = this._chantier_url + '/update';
 
   private _all_chantiers_url = this._chantier_url + '/all';
 
@@ -112,5 +120,29 @@ export class ConfigService {
 
   get update_user(): string{
     return this._update_user_url;
+  }
+
+  get create_chantier_url(): string{
+    return this._new_chantier_url;
+  }
+
+  get update_chantier_url(): string {
+    return this._update_chantier_url;
+  }
+
+  get create_client_url(): string{
+    return this._new_client_url;
+  }
+
+  get update_client_url(): string{
+    return this._update_client_url;
+  }
+
+  get chantier_url(): string{
+    return this._chantier_url;
+  }
+
+  get client_url(): string{
+    return this._client_url;
   }
 }

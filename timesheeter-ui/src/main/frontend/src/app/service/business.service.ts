@@ -9,6 +9,8 @@ import {Timesheets} from "../modeles/timesheets";
 import {Semaine} from "../modeles/Semaine";
 import {Time} from "@angular/common";
 import {User} from "../modeles/User";
+import {Chantier} from "../modeles/chantier";
+import {Client} from "../modeles/client";
 
 @Injectable()
 export class BusinessService {
@@ -61,6 +63,31 @@ export class BusinessService {
   updateUser(user:User){
     return this.httpClient.post(this.config.update_user, user, {headers: this.headers});
   }
+
+  getChantierById(id:number){
+    return this.httpClient.get(this.config.chantiers_url + '/' + id);
+  }
+
+  getClientById(id: number){
+    return this.httpClient.get(this.config.clients_url + '/' + id);
+  }
+
+  createChantier(chantier:Chantier){
+    return this.httpClient.post(this.config.create_chantier_url, chantier,{headers: this.headers});
+  }
+
+  updateChantier(chantier: Chantier){
+    return this.httpClient.post(this.config.update_chantier_url, chantier, {headers: this.headers});
+  }
+
+  createClient(client:Client){
+    return this.httpClient.post(this.config.create_client_url, client, {headers: this.headers});
+  }
+
+  updateClient(client:Client){
+    return this.httpClient.post(this.config.update_client_url, client, {headers: this.headers});
+  }
+
   filterIfSemaineAlreadyInArray(semaineToCheck: Semaine, semaineArray: Semaine[]): boolean{
     for(let semaineInArray of semaineArray){
       if(semaineToCheck.numeroSemaine === semaineInArray.numeroSemaine

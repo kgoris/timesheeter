@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {BusinessService, UserService} from "../service";
 import {User} from "../modeles/User";
-import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-user-detail',
@@ -23,7 +22,6 @@ export class UserDetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private location: Location,
     private businessService: BusinessService) { }
 
   ngOnInit() {
@@ -50,7 +48,7 @@ export class UserDetailComponent implements OnInit {
             this.displayMessage = "L'utilisateur a été créé";
           },
           error => {
-            let message = "Create User - erreur";
+            let message = "Création de l'utilisateur - erreur";
             this.error = true;
             this.displayMessage = message;
             console.error(message)
@@ -62,7 +60,7 @@ export class UserDetailComponent implements OnInit {
             this.displayMessage = "L'utilisateur a été modifié";
           },
           error => {
-            let message = "Update User - erreur";
+            let message = "Modification de l'utilisateur - erreur";
             this.error = true;
             this.displayMessage = message;
             console.error(message)

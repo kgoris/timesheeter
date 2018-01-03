@@ -9,4 +9,5 @@ export class Client{
   ville: string;
   pays: string;
   numTva: string;
+  new: boolean;
 }

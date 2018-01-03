@@ -4,4 +4,5 @@ export class Chantier{
   }
   nom: string;
   id: number;
+  new: boolean;
 }

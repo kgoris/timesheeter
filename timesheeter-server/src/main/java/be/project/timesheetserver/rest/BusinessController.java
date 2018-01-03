@@ -31,10 +31,22 @@ public class BusinessController {
         return clientRepository.findAll();
     }
 
+    @RequestMapping("/client/:id")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Client clientById(@PathVariable(name="id") Integer id){
+        return clientRepository.findById(id);
+    }
+
     @RequestMapping("/chantier/all")
     @PreAuthorize("hasRole('USER')")
     public List<Chantier> allChantier(){
         return chantierRepository.findAll();
+    }
+
+    @RequestMapping("/chantier/:id")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Chantier chantierById(@PathVariable(name="id") Integer id){
+        return chantierRepository.findById(id);
     }
 
     @PostMapping("/recordedtimesheets")

@@ -21,7 +21,6 @@ import { DetailComponent } from './detail/detail.component';
 import { HistoriqueComponent } from './historique/historique.component';
 import { UsersComponent } from './users/users.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
-import { ChantierComponent } from './chantier/chantier.component';
 import { ChantiersComponent } from './chantiers/chantiers.component';
 import { ChantierDetailComponent } from './chantier-detail/chantier-detail.component';
 import { ClientsComponent } from './clients/clients.component';
@@ -44,7 +43,6 @@ import { ClientDetailComponent } from './client-detail/client-detail.component';
     HistoriqueComponent,
     UsersComponent,
     UserDetailComponent,
-    ChantierComponent,
     ChantiersComponent,
     ChantierDetailComponent,
     ClientsComponent,

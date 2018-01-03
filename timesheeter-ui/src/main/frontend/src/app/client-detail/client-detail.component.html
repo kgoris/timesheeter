@@ -1,3 +1,97 @@
-<p>
-  client-detail works!
-</p>
+<app-header></app-header>
+
+<form class="form-vertical"  [formGroup]="form"
+      (ngSubmit)="onSubmit()" #clientForm="ngForm"
+      ngNativeValidate>
+
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <h2>Client</h2>
+    </div>
+  </div>
+
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <label for="nom" class="col-sm-3 col-form-label">Nom</label>
+      <input class="col-sm-3" style="border: 1px solid #868e96"
+             [ngModelOptions]="{standalone: true}"
+             [(ngModel)]="currentClient.nom"
+             id="nom" type="text"
+             required/>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <label for="rue" class="col-sm-3 col-form-label">Rue</label>
+      <input class="col-sm-3" style="border: 1px solid #868e96"
+             [ngModelOptions]="{standalone: true}"
+             [(ngModel)]="currentClient.rue"
+             id="rue" type="text"
+             required/>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <label for="codePostal" class="col-sm-3 col-form-label">Code postal</label>
+      <input class="col-sm-3" style="border: 1px solid #868e96"
+             [ngModelOptions]="{standalone: true}"
+             [(ngModel)]="currentClient.codePostal"
+             id="codePostal" type="number"
+             required/>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <label for="ville" class="col-sm-3 col-form-label">Ville</label>
+      <input class="col-sm-3" style="border: 1px solid #868e96"
+             [ngModelOptions]="{standalone: true}"
+             [(ngModel)]="currentClient.ville"
+             id="ville" type="text"
+             required/>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <label for="pays" class="col-sm-3 col-form-label">Pays</label>
+      <input class="col-sm-3" style="border: 1px solid #868e96"
+             [ngModelOptions]="{standalone: true}"
+             [(ngModel)]="currentClient.pays"
+             id="pays" type="text"
+             required/>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <label for="numTva" class="col-sm-3 col-form-label">Numéro TVA</label>
+      <input class="col-sm-3" style="border: 1px solid #868e96"
+             [ngModelOptions]="{standalone: true}"
+             [(ngModel)]="currentClient.numTva"
+             id="numTva" type="text"
+             required/>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <div  [ngClass]="{'alert alert-success': !error && submitted, 'alert alert-danger': error && submitted}">
+        {{displayMessage}}
+      </div>
+    </div>
+  </div>
+  <div class="row row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-2">
+      <button style="margin-left: 15px" type="submit" class="btn btn-success">Sauver</button>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-warning" (click)="onReturn()">Retour</button>
+    </div>
+  </div>
+</form>
