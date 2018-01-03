@@ -65,11 +65,11 @@ export class BusinessService {
   }
 
   getChantierById(id:number){
-    return this.httpClient.get(this.config.chantiers_url + '/' + id);
+    return this.httpClient.get(this.config.chantier_url + '/' + id);
   }
 
   getClientById(id: number){
-    return this.httpClient.get(this.config.clients_url + '/' + id);
+    return this.httpClient.get(this.config.client_url + '/' + id);
   }
 
   createChantier(chantier:Chantier){

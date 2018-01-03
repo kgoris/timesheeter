@@ -31,7 +31,7 @@ public class BusinessController {
         return clientRepository.findAll();
     }
 
-    @RequestMapping("/client/:id")
+    @RequestMapping("/client/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public Client clientById(@PathVariable(name="id") Integer id){
         return clientRepository.findById(id);
@@ -43,7 +43,7 @@ public class BusinessController {
         return chantierRepository.findAll();
     }
 
-    @RequestMapping("/chantier/:id")
+    @RequestMapping("/chantier/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public Chantier chantierById(@PathVariable(name="id") Integer id){
         return chantierRepository.findById(id);
