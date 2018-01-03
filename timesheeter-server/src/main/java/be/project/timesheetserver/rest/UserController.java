@@ -9,9 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +39,16 @@ public class UserController {
         return this.userService.findAll();
     }
 
+    @PostMapping("/user/new")
+    public void newUser(@RequestBody User user){
+        this.userService.createUser(user);
+    }
+
+    @PostMapping("/user/update")
+    public void updateUser(@RequestBody User user){
+        this.userService.updateUser(user);
+    }
+
     @RequestMapping( method = GET, value= "/user/reset-credentials")
     public ResponseEntity<Map> resetCredentials() {
         this.userService.resetCredentials();
@@ -54,8 +62,8 @@ public class UserController {
      *  to access this endpoint.
      */
     @RequestMapping("/whoami")
-    @PreAuthorize("hasRole('USER')")
     public User user() {
+        System.out.println("");
         return (User)SecurityContextHolder
                 .getContext()
                 .getAuthentication()

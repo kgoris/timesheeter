@@ -173,4 +173,13 @@ public class BusinessServiceImpl implements BusinessService {
         List<Object> records = (ArrayList<Object>) res;
         return records.stream().map(x -> mapQueryObjectToTimesheetDTO(x)).collect(Collectors.toList());
     }
+
+    @Override
+    public void createOrUpdateClient(Client client) {
+        clientRepository.save(client);
+    }
+
+    public void createOrUpdateChantier(Chantier chantier){
+        chantierRepository.save(chantier);
+    }
 }

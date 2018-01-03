@@ -1,8 +1,6 @@
 package be.project.timesheetserver.service;
 
-import be.project.timesheetserver.model.Timesheet;
-import be.project.timesheetserver.model.TimesheetDTO;
-import be.project.timesheetserver.model.Timesheets;
+import be.project.timesheetserver.model.*;
 
 import java.text.ParseException;
 import java.util.List;
@@ -15,4 +13,6 @@ public interface BusinessService {
     List<TimesheetDTO> findTimesheetsByUserId(Integer userId);
     List<TimesheetDTO> findTimesheetsByClient(String nomClient);
     List<TimesheetDTO> findTimesheetsByChantier(String nomChantier);
+    void createOrUpdateClient(Client client);
+    void createOrUpdateChantier(Chantier chantier);
 }

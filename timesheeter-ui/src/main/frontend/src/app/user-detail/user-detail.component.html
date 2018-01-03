@@ -1,0 +1,76 @@
+<app-header></app-header>
+
+<form class="form-vertical"  [formGroup]="form"
+      (ngSubmit)="onSubmit()" #timesheetForm="ngForm"
+      ngNativeValidate>
+
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <h2>Utilisateur</h2>
+    </div>
+  </div>
+
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <label for="firstName" class="col-sm-3 col-form-label">Prénom</label>
+      <input class="col-sm-3" style="border: 1px solid #868e96"
+             [ngModelOptions]="{standalone: true}"
+             [(ngModel)]="currentUser.firstname"
+             id="firstName" type="text"
+             required/>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <label for="lastName" class="col-sm-3 col-form-label">Nom</label>
+      <input class="col-sm-3" style="border: 1px solid #868e96"
+             [ngModelOptions]="{standalone: true}"
+             [(ngModel)]="currentUser.lastname"
+             id="lastName" type="text"
+             required/>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <label for="username" class="col-sm-3 col-form-label">Nom d'utilisateur</label>
+      <input class="col-sm-3" style="border: 1px solid #868e96"
+             [ngModelOptions]="{standalone: true}"
+             [(ngModel)]="currentUser.username"
+             id="username" type="text"
+             required/>
+    </div>
+  </div>
+
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <label for="password" class="col-sm-3 col-form-label">Mot de passe</label>
+      <input class="col-sm-3" style="border: 1px solid #868e96"
+             [ngModelOptions]="{standalone: true}"
+             [(ngModel)]="currentUser.password"
+             id="password" type="password"
+             required/>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <div  [ngClass]="{'alert alert-success': !error && submitted, 'alert alert-danger': error && submitted}">
+        {{displayMessage}}
+      </div>
+    </div>
+  </div>
+  <div class="row row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-2">
+      <button style="margin-left: 15px" type="submit" class="btn btn-success">Sauver</button>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-warning" (click)="onReturn()">Retour</button>
+    </div>
+  </div>
+</form>

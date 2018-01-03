@@ -3,4 +3,5 @@ export class Chantier{
 
   }
   nom: string;
+  id: number;
 }

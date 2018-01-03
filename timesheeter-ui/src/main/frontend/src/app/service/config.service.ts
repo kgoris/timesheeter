@@ -20,6 +20,10 @@ export class ConfigService {
 
   private _users_url = this._user_url + '/all';
 
+  private _create_user_url = this._user_url + '/new';
+
+  private _update_user_url = this._user_url + '/update';
+
   private _reset_credentials_url = this._user_url + '/reset-credentials';
 
   private _client_url = this._api_url + '/client';
@@ -96,5 +100,17 @@ export class ConfigService {
 
   get timesheet_client(): string {
     return this._timesheets_by_client;
+  }
+
+  get user_url(): string{
+    return this._user_url;
+  }
+
+  get create_user(): string{
+    return this._create_user_url;
+  }
+
+  get update_user(): string{
+    return this._update_user_url;
   }
 }

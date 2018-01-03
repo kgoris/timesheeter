@@ -3,6 +3,8 @@ import { Headers } from '@angular/http';
 import { ApiService } from './api.service';
 import { ConfigService } from './config.service';
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class UserService {
@@ -15,7 +17,8 @@ export class UserService {
 
   constructor(
     private apiService: ApiService,
-    private config: ConfigService
+    private config: ConfigService,
+    private httpClient: HttpClient,
   ) { }
 
   initUser() {
@@ -49,4 +52,7 @@ export class UserService {
     return this.apiService.get(this.config.users_url);
   }
 
+  getUserById(userId: number): Observable<object>{
+    return this.httpClient.get(this.config.user_url + '/' + userId);
+  }
 }

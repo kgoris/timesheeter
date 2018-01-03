@@ -66,4 +66,24 @@ public class BusinessController {
     public List<TimesheetDTO> timesheetByChantier(@PathVariable(name="nomChantier") String nomChantier){
         return businessService.findTimesheetsByChantier(nomChantier);
     }
+
+    @PostMapping("/client/new")
+    public void newClient(@RequestBody Client client){
+        this.businessService.createOrUpdateClient(client);
+    }
+
+    @PostMapping("/client/update")
+    public void updateClient(@RequestBody Client client){
+        this.businessService.createOrUpdateClient(client);
+    }
+
+    @PostMapping("/chantier/new")
+    public void newChantier(@RequestBody Chantier chantier){
+        this.businessService.createOrUpdateChantier(chantier);
+    }
+
+    @PostMapping("/chantier/update")
+    public void updateChantier(@RequestBody Chantier chantier){
+        this.businessService.createOrUpdateChantier(chantier);
+    }
 }

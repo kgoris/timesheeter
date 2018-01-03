@@ -52,4 +52,26 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public void createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public void updateUser(User user) {
+        User fetchedUser = this.findById(user.getId());
+        if(fetchedUser != null){
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            if(!fetchedUser.getPassword().equals(passwordEncoder.encode(user.getPassword()))){
+                user.setPassword(encodedPassword);
+            }
+            userRepository.save(user);
+        }
+
+    }
+
+
 }

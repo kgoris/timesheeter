@@ -1,0 +1,26 @@
+<app-header></app-header>
+<div class="row voffset3">
+  <div class="col-md-3">
+    <button class="btn btn-warning" (click)="onNewUser()">Nouveau</button>
+  </div>
+  <div class="col-md-6">
+
+  </div>
+</div>
+
+<table class="table  table-hover">
+  <thead>
+  <tr>
+    <th scope="col">Prénom</th>
+    <th scope="col">Nom</th>
+    <th scope="col">Nom utilisateur</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of allUsers" (click)="onUserClick(user)" class="table-primary">
+    <th scope="row">{{user.firstname}}</th>
+    <th scope="row">{{user.lastname}}</th>
+    <th scope="row">{{user.username}}</th>
+  </tr>
+  </tbody>
+</table>

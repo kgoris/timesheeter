@@ -8,6 +8,7 @@ import {Timesheet} from "../modeles/timesheet";
 import {Timesheets} from "../modeles/timesheets";
 import {Semaine} from "../modeles/Semaine";
 import {Time} from "@angular/common";
+import {User} from "../modeles/User";
 
 @Injectable()
 export class BusinessService {
@@ -53,6 +54,13 @@ export class BusinessService {
     return this.httpClient.get(this.config.timesheet_client + nomClient);
   }
 
+  createUser(user:User){
+    return this.httpClient.post(this.config.create_user, user, {headers: this.headers});
+  }
+
+  updateUser(user:User){
+    return this.httpClient.post(this.config.update_user, user, {headers: this.headers});
+  }
   filterIfSemaineAlreadyInArray(semaineToCheck: Semaine, semaineArray: Semaine[]): boolean{
     for(let semaineInArray of semaineArray){
       if(semaineToCheck.numeroSemaine === semaineInArray.numeroSemaine

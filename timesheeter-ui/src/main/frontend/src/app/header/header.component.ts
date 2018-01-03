@@ -26,18 +26,27 @@ export class HeaderComponent implements OnInit {
   }
 
   onDetail(){
-    this.router.navigate(["detail"]);
+    this.router.navigate(["/detail"]);
   }
   onHistorique(){
-    this.router.navigate(["historique"]);
+    this.router.navigate(["/historique"]);
   }
   onEncodage(){
-    this.router.navigate(["timesheet"]);
-
+    this.router.navigate(["/timesheet"]);
   }
+  onUtilisateurs(){
+    this.router.navigate(["/users"]);
+  }
+
+  onChantiers(){
+    this.router.navigate(["/chantiers"]);
+  }
+
+  onClients(){
+    this.router.navigate(["/clients"]);
+  }
+
   ngOnInit() {
-    /*this.userService.isAdmin.subscribe(x => this.isAdmin = x);
-    this.userService.isUser.subscribe(x => this.isUser = x);*/
   }
 
   isAdmin(){
