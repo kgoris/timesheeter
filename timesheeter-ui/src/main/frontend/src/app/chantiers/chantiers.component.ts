@@ -11,7 +11,7 @@ import {User} from "../modeles/User";
 })
 export class ChantiersComponent implements OnInit {
 
-  private allChantiers: Chantier[];
+  allChantiers: Chantier[];
   constructor(private businessService:BusinessService,  private router: Router) { }
 
   ngOnInit() {

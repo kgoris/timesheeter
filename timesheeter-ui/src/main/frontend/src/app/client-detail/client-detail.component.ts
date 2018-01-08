@@ -12,11 +12,11 @@ import {Client} from "../modeles/client";
 })
 export class ClientDetailComponent implements OnInit {
 
-  private form: FormGroup;
-  private currentClient: Client;
-  private displayMessage : string;
-  private error: boolean;
-  private submitted : boolean;
+  form: FormGroup;
+  currentClient: Client;
+  displayMessage : string;
+  error: boolean;
+  submitted : boolean;
 
   constructor(
     private formBuilder: FormBuilder,

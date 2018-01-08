@@ -11,7 +11,7 @@ declare var $ : any;
 })
 export class DetailComponent implements OnInit {
 
-  private allTimesheets : Timesheet[];
+  allTimesheets : Timesheet[];
   constructor(private businessService: BusinessService) { }
 
   ngOnInit() {

@@ -14,34 +14,34 @@ import {Semaine} from "../modeles/Semaine";
 })
 export class HistoriqueComponent implements OnInit {
 
-  private allUtilisateur: User[];
-  private allChantiers: Chantier[];
-  private allClients: Client[];
+  allUtilisateur: User[];
+  allChantiers: Chantier[];
+  allClients: Client[];
 
-  private historyTypes: string [];
-  private sortTypes: string [];
-  private allMonth: string[];
-  private allSemaines: Semaine[];
-  private allYear: string[];
-  private allTimesheet: Timesheet[];
-  private filteredTimesheets: Timesheet[];
-  private chosenHistoryType: string;
-  private chosenSortType: string;
-  private chosenUtilisateur: User;
-  private chosenChantier: string;
-  private chosenClient: string;
-  private chosenMonth: string;
-  private chosenSemaine: Semaine;
-  private chosenYear: string;
+  historyTypes: string [];
+  sortTypes: string [];
+  allMonth: string[];
+  allSemaines: Semaine[];
+  allYear: string[];
+  allTimesheet: Timesheet[];
+  filteredTimesheets: Timesheet[];
+  chosenHistoryType: string;
+  chosenSortType: string;
+  chosenUtilisateur: User;
+  chosenChantier: string;
+  chosenClient: string;
+  chosenMonth: string;
+  chosenSemaine: Semaine;
+  chosenYear: string;
 
-  private user_const: string = "Utilisateur";
-  private chantier_const: string = "Chantier";
-  private client_const: string = "Client";
-  private mois_const: string = "Mois";
-  private semaine_const: string = "Semaine";
-  private year_const: string = "Annee";
+  user_const: string = "Utilisateur";
+  chantier_const: string = "Chantier";
+  client_const: string = "Client";
+  mois_const: string = "Mois";
+  semaine_const: string = "Semaine";
+  year_const: string = "Annee";
 
-  private totalHeures: string;
+  totalHeures: string;
 
   form: FormGroup;
 

@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 })
 export class UsersComponent implements OnInit {
 
-  private allUsers;
+  allUsers:User[];
   constructor(private userService: UserService,  private router: Router) { }
 
   ngOnInit() {

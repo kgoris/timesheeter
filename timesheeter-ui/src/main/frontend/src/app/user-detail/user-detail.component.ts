@@ -11,11 +11,11 @@ import {User} from "../modeles/User";
 })
 export class UserDetailComponent implements OnInit {
 
-  private form: FormGroup;
-  private currentUser: User;
-  private displayMessage : string;
-  private error: boolean;
-  private submitted : boolean;
+  form: FormGroup;
+  currentUser: User;
+  displayMessage : string;
+  error: boolean;
+  submitted : boolean;
 
   constructor(
     private formBuilder: FormBuilder,

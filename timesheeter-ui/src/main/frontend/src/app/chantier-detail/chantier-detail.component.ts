@@ -12,11 +12,11 @@ import {User} from "../modeles/User";
 })
 export class ChantierDetailComponent implements OnInit {
 
-  private form: FormGroup;
-  private currentChantier: Chantier;
-  private displayMessage : string;
-  private error: boolean;
-  private submitted : boolean;
+  form: FormGroup;
+  currentChantier: Chantier;
+  displayMessage : string;
+  error: boolean;
+  submitted : boolean;
 
   constructor(
     private formBuilder: FormBuilder,

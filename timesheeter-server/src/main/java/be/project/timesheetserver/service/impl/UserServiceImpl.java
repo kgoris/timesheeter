@@ -1,6 +1,8 @@
 package be.project.timesheetserver.service.impl;
 
+import be.project.timesheetserver.model.Authority;
 import be.project.timesheetserver.model.User;
+import be.project.timesheetserver.repository.AutorityRepository;
 import be.project.timesheetserver.repository.UserRepository;
 import be.project.timesheetserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -21,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AutorityRepository autorityRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -56,6 +61,8 @@ public class UserServiceImpl implements UserService {
     @PreAuthorize("hasRole('ADMIN')")
     public void createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Authority authority = autorityRepository.findByName("ROLE_USER");
+        user.addAuthority(authority);
         userRepository.save(user);
     }
 
@@ -68,7 +75,17 @@ public class UserServiceImpl implements UserService {
             if(!fetchedUser.getPassword().equals(passwordEncoder.encode(user.getPassword()))){
                 user.setPassword(encodedPassword);
             }
-            userRepository.save(user);
+
+            fetchedUser.setFirstname(user.getFirstname());
+            fetchedUser.setLastname(user.getFirstname());
+            fetchedUser.setUsername(user.getUsername());
+
+           /* List<BigInteger> autorityIds = autorityRepository.findAutorityIdsByUserId(user.getId());
+            for(BigInteger autorityId : autorityIds){
+                Authority authority = autorityRepository.findById(Long.valueOf(autorityId.toString()));
+                user.addAuthority(authority);
+            }*/
+            userRepository.save(fetchedUser);
         }
 
     }

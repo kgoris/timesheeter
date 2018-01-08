@@ -3,9 +3,11 @@ package be.project.timesheetserver.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,6 +41,13 @@ public class User implements UserDetails, Serializable {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
+
+    public void addAuthority(Authority authority){
+        if(CollectionUtils.isEmpty(this.authorities)){
+            this.authorities = new ArrayList<>();
+        }
+        this.authorities.add(authority);
+    }
 
     public Integer getId() {
         return id;

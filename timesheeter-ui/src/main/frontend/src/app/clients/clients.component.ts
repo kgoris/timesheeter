@@ -11,7 +11,7 @@ import {Chantier} from "../modeles/chantier";
 })
 export class ClientsComponent implements OnInit {
 
-  private allClients : Client[];
+  allClients : Client[];
 
   constructor(private businessService:BusinessService,  private router: Router) { }
 
