@@ -39,6 +39,9 @@ public class AuthenticationController {
     @Value("${jwt.cookie}")
     private String TOKEN_COOKIE;
 
+    @Value("${token.context.path}")
+    private String contextRoot;
+
     @RequestMapping(value = "/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request, HttpServletResponse response) {
 
@@ -48,7 +51,7 @@ public class AuthenticationController {
             String refreshedToken = tokenHelper.refreshToken(authToken);
 
             Cookie authCookie = new Cookie( TOKEN_COOKIE, ( refreshedToken ) );
-            authCookie.setPath( "/" );
+            authCookie.setPath( contextRoot );
             authCookie.setHttpOnly( true );
             authCookie.setMaxAge( EXPIRES_IN );
             // Add cookie to response
