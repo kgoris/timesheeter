@@ -49,4 +49,6 @@ public class Timesheet {
 
     private Double totalHeures;
 
+    private String observations;
+
 }

@@ -17,4 +17,5 @@ export class Timesheet{
   mois: string;
   annee: string;
   totalHeures : string;
+  observations: string;
 }

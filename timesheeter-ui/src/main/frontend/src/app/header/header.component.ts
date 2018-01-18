@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AuthService, UserService} from "../service";
 import {Router} from "@angular/router";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import {User} from "../modeles/User";
 
 @Component({
   selector: 'app-header',
@@ -23,6 +24,10 @@ export class HeaderComponent implements OnInit {
   }
   onClick(){
     this.isMenuCollapsed = !this.isMenuCollapsed;
+  }
+
+  getUser():User{
+    return this.userService.currentUser;
   }
 
   onDetail(){

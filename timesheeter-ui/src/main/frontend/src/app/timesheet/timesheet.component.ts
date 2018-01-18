@@ -31,11 +31,9 @@ export class TimesheetComponent implements OnInit {
   error : boolean;
 
   constructor(private businessService:BusinessService,
-              private formBuilder: FormBuilder,
               private _eref: ElementRef) { }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({});
     this.currentTimesheet = new Timesheet();
     this.recordedTimesheets = [];
     this.localTimesheetId = 0;

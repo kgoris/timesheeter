@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
             }
 
             fetchedUser.setFirstname(user.getFirstname());
-            fetchedUser.setLastname(user.getFirstname());
+            fetchedUser.setLastname(user.getLastname());
             fetchedUser.setUsername(user.getUsername());
 
            /* List<BigInteger> autorityIds = autorityRepository.findAutorityIdsByUserId(user.getId());
