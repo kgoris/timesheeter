@@ -48,7 +48,7 @@ public class Timesheet {
     private Date heurePauseFin;
 
     private Double totalHeures;
-
+    @Column(name="observations", columnDefinition="TEXT", length = 516)
     private String observations;
 
 }

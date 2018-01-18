@@ -69,6 +69,7 @@ public class BusinessServiceImpl implements BusinessService {
                 .heureFin(heureFin)
                 .heurePauseDebut(heureDebutPause)
                 .heurePauseFin(heureFinPause)
+                .observations(timesheetDTO.getObservations())
                 .build();
     }
 

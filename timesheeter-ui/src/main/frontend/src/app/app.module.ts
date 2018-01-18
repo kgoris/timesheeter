@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModule, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
@@ -25,6 +25,8 @@ import { ChantiersComponent } from './chantiers/chantiers.component';
 import { ChantierDetailComponent } from './chantier-detail/chantier-detail.component';
 import { ClientsComponent } from './clients/clients.component';
 import { ClientDetailComponent } from './client-detail/client-detail.component';
+import { EncodingModalComponent } from './encoding-modal/encoding-modal.component';
+import { EncodingModalContentComponent } from './encoding-modal-content/encoding-modal-content.component';
 
 
 
@@ -47,6 +49,8 @@ import { ClientDetailComponent } from './client-detail/client-detail.component';
     ChantierDetailComponent,
     ClientsComponent,
     ClientDetailComponent,
+    EncodingModalComponent,
+    EncodingModalContentComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,8 +58,9 @@ import { ClientDetailComponent } from './client-detail/client-detail.component';
     FormsModule,
     NgbModule.forRoot(),
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
+  entryComponents:[EncodingModalContentComponent],
   providers: [
     LoginGuard,
     GuestGuard,

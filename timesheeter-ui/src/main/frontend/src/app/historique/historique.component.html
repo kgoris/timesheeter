@@ -1,7 +1,5 @@
 <app-header></app-header>
-<form class="form-vertical"  [formGroup]="form"
-       #historiqueForm="ngForm"
-      ngNativeValidate>
+<form class="form-vertical"   #historiqueForm="ngForm">
   <div class="row voffset3">
     <div class="col-md-3"></div>
     <div class="col-md-6">
@@ -9,36 +7,36 @@
     </div>
   </div>
   <div class="row voffset3">
-    <div class="col-2">
+    <div class="col-3">
       <label for="historyType" class="col-sm-4">Type:</label>
-      <select (change)="onSelectFilter()" name="chosenHistoryType" id="historyType" [(ngModel)]="chosenHistoryType" [ngModelOptions]="{standalone: true}">
+      <select (change)="onSelectFilter()" name="chosenHistoryType" id="historyType" [(ngModel)]="chosenHistoryType" >
         <option value="" ></option>
         <option *ngFor="let historyType of historyTypes">
           {{ historyType }}
         </option>
       </select>
     </div>
-    <div class="col-3" *ngIf="chosenHistoryType && chosenHistoryType === user_const">
-      <label for="selectUser" class="col-sm-5">Utilisateur:</label>
-      <select (change)="onSelectFilter()" name="chosenUtilisateur" id="selectUser" [(ngModel)]="chosenUtilisateur" [ngModelOptions]="{standalone: true}">
+    <div class="col-4" *ngIf="chosenHistoryType && chosenHistoryType === user_const">
+      <label for="selectUser" class="col-5">Utilisateur:</label>
+      <select (change)="onSelectFilter()" name="chosenUtilisateur" id="selectUser" [(ngModel)]="chosenUtilisateur" >
         <option value="" ></option>
         <option [ngValue] = "user" *ngFor="let user of allUtilisateur">
           {{ user.firstname + " " + user.lastname }}
         </option>
       </select>
     </div>
-    <div class="col-2" *ngIf="chosenHistoryType && chosenHistoryType === client_const">
-      <label for="selectClient" class="col-sm-5">Client:</label>
-      <select (change)="onSelectFilter()" name="chosenClient" id="selectClient" [(ngModel)]="chosenClient" [ngModelOptions]="{standalone: true}">
+    <div class="col-4" *ngIf="chosenHistoryType && chosenHistoryType === client_const">
+      <label for="selectClient" class="col-5">Client:</label>
+      <select (change)="onSelectFilter()" name="chosenClient" id="selectClient" [(ngModel)]="chosenClient" >
         <option value="" ></option>
         <option *ngFor="let client of allClients">
           {{ client.nom }}
         </option>
       </select>
     </div>
-    <div class="col-3" *ngIf="chosenHistoryType && chosenHistoryType === chantier_const">
-      <label for="selectChantier" class="col-sm-5">Chantier:</label>
-      <select (change)="onSelectFilter()" name="chosenChantier" id="selectChantier" [(ngModel)]="chosenChantier" [ngModelOptions]="{standalone: true}">
+    <div class="col-4" *ngIf="chosenHistoryType && chosenHistoryType === chantier_const">
+      <label for="selectChantier" class="col-5">Chantier:</label>
+      <select (change)="onSelectFilter()" name="chosenChantier" id="selectChantier" [(ngModel)]="chosenChantier" >
         <option value="" ></option>
         <option *ngFor="let chantier of allChantiers">
           {{ chantier.nom }}
@@ -46,9 +44,9 @@
       </select>
     </div>
 
-    <div class="col-3" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType">
-      <label for="selectSortType" class="col-sm-5">Trier par:</label>
-      <select (change)="onSelectFilter()" name="chosenSortType" id="selectSortType" [(ngModel)]="chosenSortType" [ngModelOptions]="{standalone: true}">
+    <div class="col-4" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType">
+      <label for="selectSortType" class="col-4">Trier par:</label>
+      <select (change)="onSelectFilter()" name="chosenSortType" id="selectSortType" [(ngModel)]="chosenSortType" >
         <option value="" ></option>
         <option *ngFor="let sortType of sortTypes">
           {{ sortType}}
@@ -58,9 +56,9 @@
   </div>
 
   <div class="row voffset3">
-    <div class="col-3" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType === mois_const">
-      <label for="selectMois" class="col-sm-3">Mois:</label>
-      <select name="chosenMois" (change)="onSelectMois()" id="selectMois" [(ngModel)]="chosenMonth" [ngModelOptions]="{standalone: true}">
+    <div class="col-4" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType === mois_const">
+      <label for="selectMois" class="col-5">Mois:</label>
+      <select name="chosenMois" (change)="onSelectMois()" id="selectMois" [(ngModel)]="chosenMonth" >
         <option value="" ></option>
         <option *ngFor="let month of allMonth">
           {{ month}}
@@ -68,8 +66,8 @@
       </select>
     </div>
     <div class="col-4" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType && chosenSortType === semaine_const">
-      <label for="selectSemaine" class="col-sm-3">Semaine:</label>
-      <select (change)="onSelectSemaine()" name="chosenSemaine" id="selectSemaine" [(ngModel)]="chosenSemaine" [ngModelOptions]="{standalone: true}">
+      <label for="selectSemaine" class="col-3">Semaine:</label>
+      <select (change)="onSelectSemaine()" name="chosenSemaine" id="selectSemaine" [(ngModel)]="chosenSemaine" >
         <option value="" ></option>
         <option [ngValue] = "semaine" *ngFor="let semaine of allSemaines">
           {{ semaine.debutSemaine + " - " + semaine.finSemaine }}
@@ -77,8 +75,8 @@
       </select>
     </div>
     <div class="col-4" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType && chosenSortType === year_const">
-      <label for="selectAnnee" class="col-sm-3">Année:</label>
-      <select (change)="onSelectYear()" name="chosenYear" id="selectAnnee" [(ngModel)]="chosenYear" [ngModelOptions]="{standalone: true}">
+      <label for="selectAnnee" class="col-5">Année:</label>
+      <select (change)="onSelectYear()" name="chosenYear" id="selectAnnee" [(ngModel)]="chosenYear" >
         <option value="" ></option>
         <option [ngValue] = "year" *ngFor="let year of allYear">
           {{ year }}
@@ -107,6 +105,8 @@
         <th scope="col">Début de pause</th>
         <th scope="col">Fin de pause</th>
         <th scope="col">Nbr Heures</th>
+        <th scope="col">Observations</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
@@ -120,6 +120,8 @@
         <td>{{timesheet.heureDebutPauseStr}}</td>
         <td>{{timesheet.heureFinPauseStr}}</td>
         <td>{{computeTotalTimesheet(timesheet)}}</td>
+        <td>{{timesheet.observations}}</td>
+        <td> <app-encoding-modal [modification]="true" [currentTimesheet]='timesheet'></app-encoding-modal></td>
       </tr>
       </tbody>
     </table>

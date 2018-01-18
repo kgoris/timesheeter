@@ -25,4 +25,5 @@ public class TimesheetDTO {
     private String mois;
     private String annee;
     private String totalHeures;
+    private String observations;
 }
