@@ -225,4 +225,34 @@ export class BusinessService {
 
     return true;
   }
+
+  updateTimesheet(timesheet:Timesheet): Observable<object>{
+    return this.httpClient.post(this.config.timesheet_url, timesheet, {headers: this.headers})
+  }
+
+  formatDateForServer(date:any){
+    let day = date.day;
+    let month = date.month;
+    if(day.length ===1){
+      day = '0' + day;
+    }
+    if(month.length === 1){
+      month = '0' + month;
+    }
+
+    return date.year + '-' + month + '-' + day;
+  }
+
+  formatDateForDisplay(date:any){
+    let day = date.day;
+    let month = date.month;
+    if(day.length ===1){
+      day = '0' + day;
+    }
+    if(month.length === 1){
+      month = '0' + month;
+    }
+
+    return day + '/' + month + '/' + date.year;
+  }
 }

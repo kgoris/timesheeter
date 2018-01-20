@@ -37,6 +37,7 @@ public class BusinessController {
         return clientRepository.findById(id);
     }
 
+
     @RequestMapping("/chantier/all")
     @PreAuthorize("hasRole('USER')")
     public List<Chantier> allChantier(){
@@ -53,6 +54,12 @@ public class BusinessController {
     @PreAuthorize("hasRole('USER')")
     public void postRecordedTimesheet(@RequestBody Timesheets recordedTimesheets) throws ParseException {
         businessService.manageRecordedTimesheets(recordedTimesheets);
+    }
+
+    @PostMapping("/timesheet")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void postTimesheet(@RequestBody TimesheetDTO timesheetDTO) throws ParseException {
+        businessService.updateTimesheet(timesheetDTO);
     }
 
     @RequestMapping("timesheet/all")

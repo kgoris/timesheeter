@@ -88,18 +88,7 @@ export class TimesheetComponent implements OnInit {
     return day + '/' + month + '/' + date.year;
   }
 
-  formatDateForServer(date:any){
-    let day = date.day;
-    let month = date.month;
-    if(day.length ===1){
-      day = '0' + day;
-    }
-    if(month.length === 1){
-      month = '0' + month;
-    }
 
-    return date.year + '-' + month + '-' + day;
-  }
 
   checkHours(timesheet:Timesheet):boolean{
     return this.businessService.checkHours(timesheet);
@@ -158,7 +147,7 @@ export class TimesheetComponent implements OnInit {
 
   setDates(){
     for(let timesheet of this.recordedTimesheets){
-      timesheet.dateStr = this.formatDateForServer(timesheet.dateDt);
+      timesheet.dateStr = this.businessService.formatDateForServer(timesheet.dateDt);
     }
   }
   onValidate(){

@@ -36,6 +36,13 @@ public class BusinessServiceImpl implements BusinessService {
         timesheet.setTotalHeures(diffHeures - diffHeuresPause);
     }
 
+    private void mapAndSaveTimesheet(TimesheetDTO timesheetDTO, User currentUser) throws ParseException {
+        Timesheet timesheet = mapTimesheetDTOToTimesheet(timesheetDTO);
+        timesheet.setUser(currentUser);
+        computeTotalHeure(timesheet);
+        timesheetRepository.save(timesheet);
+    }
+
     @Override
     public void manageRecordedTimesheets(Timesheets recordedTimesheets) throws ParseException {
         User currentUser = (User) SecurityContextHolder
@@ -43,11 +50,17 @@ public class BusinessServiceImpl implements BusinessService {
                 .getAuthentication()
                 .getPrincipal();
         for(TimesheetDTO timesheetDTO : recordedTimesheets.getTimesheetList()){
-            Timesheet timesheet = mapTimesheetDTOToTimesheet(timesheetDTO);
-            timesheet.setUser(currentUser);
-            computeTotalHeure(timesheet);
-            timesheetRepository.save(timesheet);
+            mapAndSaveTimesheet(timesheetDTO, currentUser);
         }
+    }
+
+    @Override
+    public void updateTimesheet(TimesheetDTO timesheetDTO) throws ParseException {
+        User currentUser = (User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        mapAndSaveTimesheet(timesheetDTO, currentUser);
     }
 
     @Override
@@ -70,6 +83,7 @@ public class BusinessServiceImpl implements BusinessService {
                 .heurePauseDebut(heureDebutPause)
                 .heurePauseFin(heureFinPause)
                 .observations(timesheetDTO.getObservations())
+                .id(timesheetDTO.getId())
                 .build();
     }
 
@@ -83,6 +97,7 @@ public class BusinessServiceImpl implements BusinessService {
         String heureDebutPause = formatHeures.format(timesheet.getHeurePauseDebut());
         String heureFinPause = formatHeures.format(timesheet.getHeurePauseFin());
         return TimesheetDTO.builder().
+                id(timesheet.getId()).
                 nomClient(timesheet.getClient().getNom())
                 .nomChantier(timesheet.getChantier().getNom())
                 .nomUtilisateur(timesheet.getUser().getFirstname() + " " + timesheet.getUser().getLastname())
@@ -132,6 +147,7 @@ public class BusinessServiceImpl implements BusinessService {
                     .nomClient((String) recordArray[11])
                     .nomChantier((String) recordArray[12])
                     .nomUtilisateur((String) recordArray[13] + " " + (String) recordArray[14])
+                    .id((Integer)recordArray[15])
                     .build();
         }else{
             timesheetDTO = TimesheetDTO.builder()
@@ -149,6 +165,7 @@ public class BusinessServiceImpl implements BusinessService {
                     .nomClient((String) recordArray[11])
                     .nomChantier((String) recordArray[12])
                     .nomUtilisateur((String) recordArray[13] + " " + (String) recordArray[14])
+                    .id((Integer)recordArray[15])
                     .build();
         }
         return timesheetDTO;

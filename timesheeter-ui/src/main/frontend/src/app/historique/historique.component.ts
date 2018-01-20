@@ -6,6 +6,7 @@ import {Client} from "../modeles/client";
 import {Timesheet} from "../modeles/timesheet";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Semaine} from "../modeles/Semaine";
+import {NgbDateFRParserFormatter} from "../timesheet/ngv-date-fr-parser-formatter";
 
 @Component({
   selector: 'app-historique',
@@ -88,6 +89,18 @@ export class HistoriqueComponent implements OnInit {
     this.allSemaines = timeMap["semaine"];
     this.allYear = timeMap["year"];
   }
+  formatDateForDisplay(date:any){
+    let day = date.day;
+    let month = date.month;
+    if(day.length ===1){
+      day = '0' + day;
+    }
+    if(month.length === 1){
+      month = '0' + month;
+    }
+
+    return day + '/' + month + '/' + date.year;
+  }
 
   onSelectFilter() {
     if ((this.chosenUtilisateur || this.chosenClient || this.chosenChantier) && this.chosenSortType && this.chosenHistoryType) {
@@ -128,19 +141,28 @@ export class HistoriqueComponent implements OnInit {
   computeTotalHeures(){
     this.totalHeures = this.businessService.computeHeureAllTimesheets(this.filteredTimesheets);
   }
+
+  formatDateTimesheet(){
+    let parser:NgbDateFRParserFormatter = new NgbDateFRParserFormatter();
+
+    this.filteredTimesheets.map(theTimesheet => {let datetmp:any = parser.parse(theTimesheet.dateStr); theTimesheet.dateDt = datetmp})
+  }
   onSelectMois() {
     this.filteredTimesheets = this.businessService.filterTimesheetsByMonth(this.allTimesheet, this.chosenMonth);
     this.computeTotalHeures();
+    this.formatDateTimesheet();
   }
 
   onSelectSemaine() {
     this.filteredTimesheets = this.businessService.filterTimesheetsBySemaine(this.allTimesheet, this.chosenSemaine);
     this.computeTotalHeures();
+    this.formatDateTimesheet();
   }
 
   onSelectYear() {
     this.filteredTimesheets = this.businessService.filterTimesheetsByYear(this.allTimesheet, this.chosenYear);
     this.computeTotalHeures();
+    this.formatDateTimesheet();
   }
 
 }

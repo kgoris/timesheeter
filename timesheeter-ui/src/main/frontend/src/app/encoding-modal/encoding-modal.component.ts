@@ -1,36 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {Timesheet} from "../modeles/timesheet";
 import {EncodingModalContentComponent} from "../encoding-modal-content/encoding-modal-content.component";
-
-/*
-
-@Component({
-  selector: 'app-encoding-modal-content',
-  templateUrl: './encoding-modal-content.component.html',
-  styleUrls: ['./encoding-modal-content.component.css']
-})
-export class EncodingModalContentComponent implements OnInit {
-  @Input()
-  currentTimesheet:Timesheet;
-  @Input()
-  modification:boolean=false;
-  constructor(public activeModal: NgbActiveModal) { }
-
-  ngOnInit() {
-    console.log(this.currentTimesheet);
-    console.log(this.modification);
-  }
-
-  onDismiss(){
-    this.activeModal.dismiss('Cross click');
-  }
-
-  onClose(){
-    this.activeModal.close('Close click');
-  }
-
-}*/
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-encoding-modal',
@@ -44,15 +16,15 @@ export class EncodingModalComponent implements OnInit {
   modification:boolean=false;
 
   constructor(private modalService: NgbModal) {
-    console.log(this.currentTimesheet);
-    console.log(this.modification);
   }
   open() {
-    this.modalService.open(EncodingModalContentComponent);
+    const modalRef: NgbModalRef = this.modalService.open(EncodingModalContentComponent);
+    modalRef.componentInstance.currentTimesheet = this.currentTimesheet;
+    modalRef.componentInstance.modification = this.modification;
   }
+
+
   ngOnInit() {
-    console.log(this.currentTimesheet);
-    console.log(this.modification);
   }
 
 }

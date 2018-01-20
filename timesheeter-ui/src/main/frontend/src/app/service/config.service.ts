@@ -145,4 +145,8 @@ export class ConfigService {
   get client_url(): string{
     return this._client_url;
   }
+
+  get timesheet_url(): string{
+    return this._timesheet_url;
+  }
 }

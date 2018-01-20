@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface BusinessService {
     void manageRecordedTimesheets(Timesheets recordedTimesheets) throws ParseException;
+    void updateTimesheet(TimesheetDTO timesheetDTO) throws ParseException;
     Timesheet mapTimesheetDTOToTimesheet(TimesheetDTO timesheetDTO) throws ParseException;
     TimesheetDTO mapTimesheetToTomesheetDTO(Timesheet timesheet);
     List<TimesheetDTO> findAllTimesheetDTO();
