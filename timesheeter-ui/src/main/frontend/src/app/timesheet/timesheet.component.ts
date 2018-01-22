@@ -7,6 +7,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import {NgbDateFRParserFormatter} from "./ngv-date-fr-parser-formatter";
 import {NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
+import {User} from "../modeles/User";
 
 @Component({
   selector: 'app-timesheet',
@@ -29,6 +30,12 @@ export class TimesheetComponent implements OnInit {
   displayMessage: string;
   displayValidationMessage : string;
   error : boolean;
+  chantier: Chantier;
+  chantierChoisis: Chantier[];
+  filteredChantier: Chantier[];
+  ouvrier: User;
+  ouvriersAccompagnant: User[];
+
 
   constructor(private businessService:BusinessService,
               private _eref: ElementRef) { }
@@ -39,6 +46,9 @@ export class TimesheetComponent implements OnInit {
     this.localTimesheetId = 0;
     this.submitted = false;
     this.error = false;
+    this.chantierChoisis = [];
+    this.filteredChantier = [];
+
     this.businessService.getAllCients().subscribe(
       value => {
         this.allClients = value as Client[];
@@ -51,6 +61,7 @@ export class TimesheetComponent implements OnInit {
     this.businessService.getAllChantier().subscribe(
       value => {
         this.allChantiers = value as Chantier[];
+        this.filteredChantier = this.allChantiers;
       }, error =>{
         console.error("Business service - all chantiers - an error happened")
       }
@@ -167,6 +178,19 @@ export class TimesheetComponent implements OnInit {
         console.error("Business service - all clients - an error happened")
       }
     )
+  }
+
+  onAddChantier(){
+    this.chantierChoisis.push(this.chantier);
+    this.chantier = null;
+  }
+
+  displayFn(val: Chantier) {
+    return val ? val.nom : val;
+  }
+
+  onChangeChantier(inputChantier:any){
+    this.filteredChantier = this.allChantiers.filter(leChantier => leChantier.nom.toLowerCase().indexOf(inputChantier.toLowerCase()) > -1);
   }
 
 }

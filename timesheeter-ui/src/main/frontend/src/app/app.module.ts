@@ -27,6 +27,11 @@ import { ClientsComponent } from './clients/clients.component';
 import { ClientDetailComponent } from './client-detail/client-detail.component';
 import { EncodingModalComponent } from './encoding-modal/encoding-modal.component';
 import { EncodingModalContentComponent } from './encoding-modal-content/encoding-modal-content.component';
+import {
+  MatAutocomplete, MatAutocompleteModule, MatChipsModule, MatFormFieldModule,
+  MatInputModule
+} from "@angular/material";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 
@@ -59,6 +64,12 @@ import { EncodingModalContentComponent } from './encoding-modal-content/encoding
     NgbModule.forRoot(),
     HttpClientModule,
     ReactiveFormsModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatFormFieldModule,
+    BrowserAnimationsModule
+
   ],
   entryComponents:[EncodingModalContentComponent],
   providers: [

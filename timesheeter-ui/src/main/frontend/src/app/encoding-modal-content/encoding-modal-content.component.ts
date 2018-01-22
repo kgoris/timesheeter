@@ -22,15 +22,19 @@ export class EncodingModalContentComponent implements OnInit {
   @Input()
   modification:boolean=false;
   dynamicId:any;
-
+  displayValidationMessage :string;
   allClients: Client[];
   allChantiers: Chantier[];
+  chantier: string;
+  chantierChoisis: Chantier[];
 
   constructor(public activeModal: NgbActiveModal,
               private _eref: ElementRef,
               private businessService:BusinessService) { }
 
   ngOnInit() {
+    this.chantierChoisis = [];
+
     if(this.currentTimesheet && this.currentTimesheet.dateStr){
       let parser: NgbDateFRParserFormatter = new NgbDateFRParserFormatter();
       let date : any = parser.parse(this.currentTimesheet.dateStr);
@@ -57,8 +61,38 @@ export class EncodingModalContentComponent implements OnInit {
   onDismiss(){
     this.activeModal.dismiss('Cross click');
   }
-
+  checkCustomerInCustomerList(){
+    for(let client of this.allClients){
+      if(client.nom === this.currentTimesheet.nomClient){
+        return true;
+      }
+    }
+    return false;
+  }
+  checkHours(timesheet:Timesheet):boolean{
+    return this.businessService.checkHours(timesheet);
+  }
+  checkChantierInChantierList(){
+    for(let chantier of this.allChantiers){
+      if(chantier.nom === this.currentTimesheet.nomChantier){
+        return true;
+      }
+    }
+    return false;
+  }
   onClose(){
+    if (!this.checkHours(this.currentTimesheet)) {
+      this.displayValidationMessage = "Erreur dans l'encodage des heures.";
+      return;
+    }
+    if(!this.checkCustomerInCustomerList()){
+      this.displayValidationMessage = "Veuillez indiquer un client valide.";
+      return;
+    }
+    if(!this.checkChantierInChantierList()){
+      this.displayValidationMessage = "Veuillez indiquer un chantier valide";
+      return;
+    }
     if(this.currentTimesheet){
       this.currentTimesheet.dateStr = this.businessService.formatDateForServer(this.currentTimesheet.dateDt);
       this.businessService.updateTimesheet(this.currentTimesheet).subscribe();
@@ -84,4 +118,13 @@ export class EncodingModalContentComponent implements OnInit {
 
   searchChantier = (text$: Observable<string>) => text$.debounceTime(200).distinctUntilChanged().map(term => term.length < 2 ? []
     : this.allChantiers.map(chantier => chantier.nom).filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+
+  private findChantier(nomchantier:string):Chantier{
+    return this.allChantiers.find(x => x.nom === nomchantier);
+  }
+  onAddChantier(){
+    this.chantierChoisis.push(this.findChantier(this.chantier));
+    this.chantier = null;
+  }
+
 }

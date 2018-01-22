@@ -58,7 +58,15 @@
     </div>
     <div class="form-group">
         <label for="chantierId">Chantier</label>
-        <input id="chantierId"  name="chantier" [(ngModel)]="currentTimesheet.nomChantier" [ngbTypeahead]="searchChantier" required >
+        <input id="chantierId"  name="chantier" [(ngModel)]="chantier" [ngbTypeahead]="searchChantier" required >
+        <button  (click)="onAddChantier()"  type="button">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+    </div>
+    <div class="form-group">
+      <mat-chip-list >
+        <mat-chip style="margin: 5px" *ngFor="let unChantier of chantierChoisis"> {{unChantier.nom}} </mat-chip>
+      </mat-chip-list>
     </div>
     <div class="form-group">
         <label for="observations" class="col-sm-3 col-form-label">Observations</label>

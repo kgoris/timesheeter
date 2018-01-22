@@ -84,9 +84,29 @@
     </div>
     <div class="row">
       <div class="col-md-3"></div>
+
+        <div class="col-md-6">
+          <label for="chantierId"  class="col-sm-3 col-form-label">Chantier</label>
+
+          <input id="chantierId" type="text" #inputChantier (keyup)="onChangeChantier(inputChantier.value)"  matInput name="chantier" value="chant.nom" [(ngModel)]="chantier" [matAutocomplete]="autoChantier">
+          <button  (click)="onAddChantier()"  type="button">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
+        </div>
+
+
+        <mat-autocomplete #autoChantier="matAutocomplete" [displayWith]="displayFn" >
+          <mat-option *ngFor="let chant of filteredChantier"   [value] = "chant">
+            {{chant.nom}}
+          </mat-option>
+        </mat-autocomplete>
+    </div>
+    <div class="row">
+      <div class="col-md-3"></div>
       <div class="col-md-6">
-        <label for="chantierId" class="col-sm-3 col-form-label">Chantier</label>
-        <input id="chantierId"  name="chantier" [(ngModel)]="currentTimesheet.nomChantier" [ngbTypeahead]="searchChantier" required >
+        <mat-chip-list >
+          <mat-chip style="margin: 5px" *ngFor="let unChantier of chantierChoisis"> {{unChantier.nom}} </mat-chip>
+        </mat-chip-list>
       </div>
     </div>
     <div class="row">
