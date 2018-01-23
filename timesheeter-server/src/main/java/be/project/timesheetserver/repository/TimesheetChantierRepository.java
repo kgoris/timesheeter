@@ -12,4 +12,5 @@ import java.util.List;
  */
 public interface TimesheetChantierRepository extends JpaRepository<TimesheetChantier, Integer> {
     TimesheetChantier findByChantierAndTimesheet(Chantier chantier, Timesheet timesheet);
+    List<TimesheetChantier> findByTimesheet(Timesheet timesheet);
 }

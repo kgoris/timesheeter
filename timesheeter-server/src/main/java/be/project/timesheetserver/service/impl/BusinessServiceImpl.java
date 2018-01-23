@@ -9,6 +9,7 @@ import be.project.timesheetserver.service.BusinessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigInteger;
 import java.sql.Time;
@@ -139,7 +140,18 @@ public class BusinessServiceImpl implements BusinessService {
         String[] timesplitted = time.toString().split(":");
         return timesplitted[0] + ":" + timesplitted[1];
     }
-    private TimesheetDTO mapQueryObjectToTimesheetDTO(Object record){
+
+    private List<Chantier> findChantiersByTimesheetId(Integer timesheetId){
+        Timesheet timesheet = timesheetRepository.findById(timesheetId);
+        List<TimesheetChantier> allTimesheetChantier =  timesheetChantierRepository.findByTimesheet(timesheet);
+        List<Chantier> allChantiers = new ArrayList<>();
+        for(TimesheetChantier tc: allTimesheetChantier){
+            allChantiers.add(tc.getChantier());
+        }
+        return allChantiers;
+    }
+
+    private TimesheetDTO mapQueryObjectToTimesheetDTO(Object record, boolean fetchChantiers){
         TimesheetDTO timesheetDTO = null;
         Object[] recordArray = (Object[]) record;
         SimpleDateFormat formatDateTimesheet = new SimpleDateFormat("dd/MM/yyyy");
@@ -150,6 +162,21 @@ public class BusinessServiceImpl implements BusinessService {
         String heureFin = mapTimeToString((Time)recordArray[7]);
         String heureDebutPause = mapTimeToString((Time)recordArray[8]);
         String heureFinPause = mapTimeToString((Time)recordArray[9]);
+        String nomsChantiers = "";
+        List<Chantier> chantiers = new ArrayList<>();
+        if(fetchChantiers){
+            chantiers = findChantiersByTimesheetId((Integer)recordArray[14]);
+
+            for(Chantier chantier: chantiers){
+                String separator = "-";
+                if(StringUtils.isEmpty(nomsChantiers)){
+                    separator = "";
+                }
+
+                nomsChantiers = nomsChantiers + separator + chantier.getNom();
+
+            }
+        }
 
         if(recordArray[1] instanceof Integer) {
             timesheetDTO = TimesheetDTO.builder()
@@ -165,9 +192,9 @@ public class BusinessServiceImpl implements BusinessService {
                     .heureFinPauseStr(heureFinPause)
                     .totalHeures(((Double) recordArray[10]).toString())
                     .nomClient((String) recordArray[11])
-                    .nomChantier((String) recordArray[12])
-                    .nomUtilisateur((String) recordArray[13] + " " + (String) recordArray[14])
-                    .id((Integer)recordArray[15])
+                    .nomChantier(nomsChantiers)
+                    .nomUtilisateur((String) recordArray[12] + " " + (String) recordArray[13])
+                    .id((Integer)recordArray[14])
                     .build();
         }else{
             timesheetDTO = TimesheetDTO.builder()
@@ -183,10 +210,14 @@ public class BusinessServiceImpl implements BusinessService {
                     .heureFinPauseStr(heureFinPause)
                     .totalHeures(((Double) recordArray[10]).toString())
                     .nomClient((String) recordArray[11])
-                    .nomChantier((String) recordArray[12])
-                    .nomUtilisateur((String) recordArray[13] + " " + (String) recordArray[14])
-                    .id((Integer)recordArray[15])
+                    .nomChantier(nomsChantiers)
+                    .nomUtilisateur((String) recordArray[12] + " " + (String) recordArray[13])
+                    .id((Integer)recordArray[14])
                     .build();
+        }
+
+        if(fetchChantiers){
+            timesheetDTO.setChantiers(chantiers);
         }
         return timesheetDTO;
     }
@@ -195,21 +226,21 @@ public class BusinessServiceImpl implements BusinessService {
     public List<TimesheetDTO> findTimesheetsByUserId(Integer userId) {
         Object res = timesheetRepository.findByUser(userId);
         List<Object> records = (ArrayList<Object>) res;
-        return records.stream().map(x -> mapQueryObjectToTimesheetDTO(x)).collect(Collectors.toList());
+        return records.stream().map(x -> mapQueryObjectToTimesheetDTO(x, true)).collect(Collectors.toList());
     }
 
     @Override
     public List<TimesheetDTO> findTimesheetsByClient(String nomClient) {
         Object res = timesheetRepository.findByClient(nomClient);
         List<Object> records = (ArrayList<Object>) res;
-        return records.stream().map(x -> mapQueryObjectToTimesheetDTO(x)).collect(Collectors.toList());
+        return records.stream().map(x -> mapQueryObjectToTimesheetDTO(x, true)).collect(Collectors.toList());
     }
 
     @Override
     public List<TimesheetDTO> findTimesheetsByChantier(String nomChantier) {
         Object res = timesheetRepository.findByChantier(nomChantier);
         List<Object> records = (ArrayList<Object>) res;
-        return records.stream().map(x -> mapQueryObjectToTimesheetDTO(x)).collect(Collectors.toList());
+        return records.stream().map(x -> mapQueryObjectToTimesheetDTO(x, true)).collect(Collectors.toList());
     }
 
     @Override

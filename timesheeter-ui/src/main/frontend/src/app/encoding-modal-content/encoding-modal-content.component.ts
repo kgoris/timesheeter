@@ -56,6 +56,10 @@ export class EncodingModalContentComponent implements OnInit {
         console.error("Business service - all chantiers - an error happened")
       }
     );
+
+    if(this.currentTimesheet && this.currentTimesheet.chantiers){
+      this.chantierChoisis = this.currentTimesheet.chantiers;
+    }
   }
 
   onDismiss(){
