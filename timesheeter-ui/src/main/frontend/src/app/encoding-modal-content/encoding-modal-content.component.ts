@@ -73,12 +73,8 @@ export class EncodingModalContentComponent implements OnInit {
     return this.businessService.checkHours(timesheet);
   }
   checkChantierInChantierList(){
-    for(let chantier of this.allChantiers){
-      if(chantier.nom === this.currentTimesheet.nomChantier){
-        return true;
-      }
-    }
-    return false;
+    return this.chantierChoisis !== null && this.chantierChoisis.length >0;
+
   }
   onClose(){
     if (!this.checkHours(this.currentTimesheet)) {
@@ -95,6 +91,7 @@ export class EncodingModalContentComponent implements OnInit {
     }
     if(this.currentTimesheet){
       this.currentTimesheet.dateStr = this.businessService.formatDateForServer(this.currentTimesheet.dateDt);
+      this.currentTimesheet.chantiers = this.chantierChoisis;
       this.businessService.updateTimesheet(this.currentTimesheet).subscribe();
     }
     this.activeModal.close('Close click')
@@ -123,8 +120,25 @@ export class EncodingModalContentComponent implements OnInit {
     return this.allChantiers.find(x => x.nom === nomchantier);
   }
   onAddChantier(){
-    this.chantierChoisis.push(this.findChantier(this.chantier));
-    this.chantier = null;
+    if(this.chantier) {
+      let chantierObj : Chantier = this.findChantier(this.chantier);
+      let index = this.chantierChoisis.indexOf(chantierObj);
+      let indexAllChantiers = this.allChantiers.indexOf(chantierObj);
+      if (index < 0) {
+        this.chantierChoisis.push(chantierObj);
+      }
+      this.allChantiers.splice(indexAllChantiers, 1);
+      this.chantier = null;
+    }
   }
+
+  remove(unChantier: any): void {
+    let index = this.chantierChoisis.indexOf(unChantier);
+
+    if (index >= 0) {
+      this.chantierChoisis.splice(index, 1);
+    }
+  }
+
 
 }

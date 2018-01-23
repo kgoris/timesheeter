@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,4 +28,5 @@ public class TimesheetDTO {
     private String annee;
     private String totalHeures;
     private String observations;
+    private List<Chantier> chantiers;
 }

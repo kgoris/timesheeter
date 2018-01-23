@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="TIMESHEET")
@@ -50,5 +53,15 @@ public class Timesheet {
     private Double totalHeures;
     @Column(name="observations", columnDefinition="TEXT", length = 516)
     private String observations;
+
+    @OneToMany(mappedBy="timesheet", cascade = CascadeType.ALL)
+    private List<TimesheetChantier> timesheetChantiers;
+
+    public void addTimesheetChantier(TimesheetChantier timesheetChantier){
+        if(CollectionUtils.isEmpty(this.timesheetChantiers)){
+            this.timesheetChantiers = new ArrayList<>();
+        }
+        this.timesheetChantiers.add(timesheetChantier);
+    }
 
 }

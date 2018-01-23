@@ -31,7 +31,6 @@ export class TimesheetComponent implements OnInit {
   displayValidationMessage : string;
   error : boolean;
   chantier: Chantier;
-  chantierChoisis: Chantier[];
   filteredChantier: Chantier[];
   ouvrier: User;
   ouvriersAccompagnant: User[];
@@ -46,7 +45,7 @@ export class TimesheetComponent implements OnInit {
     this.localTimesheetId = 0;
     this.submitted = false;
     this.error = false;
-    this.chantierChoisis = [];
+    this.currentTimesheet.chantiers = [];
     this.filteredChantier = [];
 
     this.businessService.getAllCients().subscribe(
@@ -61,7 +60,6 @@ export class TimesheetComponent implements OnInit {
     this.businessService.getAllChantier().subscribe(
       value => {
         this.allChantiers = value as Chantier[];
-        this.filteredChantier = this.allChantiers;
       }, error =>{
         console.error("Business service - all chantiers - an error happened")
       }
@@ -115,12 +113,7 @@ export class TimesheetComponent implements OnInit {
   }
 
   checkChantierInChantierList(){
-    for(let chantier of this.allChantiers){
-      if(chantier.nom === this.currentTimesheet.nomChantier){
-        return true;
-      }
-    }
-    return false;
+    return this.currentTimesheet.chantiers !== null && this.currentTimesheet.chantiers.length >0;
   }
   onSubmit() {
     if (!this.checkHours(this.currentTimesheet)) {
@@ -140,20 +133,16 @@ export class TimesheetComponent implements OnInit {
     this.submitted = false;
     this.displayMessage = "";
     this.displayValidationMessage = "";
-
     this.recordedTimesheets.push(this.currentTimesheet);
     this.currentTimesheet = new Timesheet();
     this.currentTimesheet.id = this.localTimesheetId;
     this.localTimesheetId += 1;
 
   }
-  onModif(timesheetId:number){
-    for(let timesheet of this.recordedTimesheets){
-      if(timesheet.id === timesheetId){
-        this.currentTimesheet = timesheet;
-        this.recordedTimesheets = this.recordedTimesheets.filter(x => x !== timesheet);
-      }
-    }
+  onModif(timesheet:Timesheet){
+    this.currentTimesheet = timesheet;
+
+    this.recordedTimesheets = this.recordedTimesheets.filter(x => x !== timesheet);
   }
 
   setDates(){
@@ -181,8 +170,15 @@ export class TimesheetComponent implements OnInit {
   }
 
   onAddChantier(){
-    this.chantierChoisis.push(this.chantier);
-    this.chantier = null;
+    if(this.chantier) {
+      let index = this.currentTimesheet.chantiers.indexOf(this.chantier);
+      let indexAllChantiers = this.allChantiers.indexOf(this.chantier);
+      if (index < 0) {
+        this.currentTimesheet.chantiers.push(this.chantier);
+      }
+      this.allChantiers.splice(indexAllChantiers, 1);
+      this.chantier = null;
+    }
   }
 
   displayFn(val: Chantier) {
@@ -193,4 +189,15 @@ export class TimesheetComponent implements OnInit {
     this.filteredChantier = this.allChantiers.filter(leChantier => leChantier.nom.toLowerCase().indexOf(inputChantier.toLowerCase()) > -1);
   }
 
+  remove(unChantier: any): void {
+    let index = this.currentTimesheet.chantiers.indexOf(unChantier);
+    let indexAll = this.allChantiers.indexOf(unChantier);
+
+    if (index >= 0) {
+      this.currentTimesheet.chantiers.splice(index, 1);
+    }
+    if(indexAll < 0){
+      this.allChantiers.push(unChantier);
+    }
+  }
 }

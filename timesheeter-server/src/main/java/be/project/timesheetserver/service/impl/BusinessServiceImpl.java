@@ -3,6 +3,7 @@ package be.project.timesheetserver.service.impl;
 import be.project.timesheetserver.model.*;
 import be.project.timesheetserver.repository.ChantierRepository;
 import be.project.timesheetserver.repository.ClientRepository;
+import be.project.timesheetserver.repository.TimesheetChantierRepository;
 import be.project.timesheetserver.repository.TimesheetRepository;
 import be.project.timesheetserver.service.BusinessService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class BusinessServiceImpl implements BusinessService {
     private final TimesheetRepository timesheetRepository;
     private final ChantierRepository chantierRepository;
     private final ClientRepository clientRepository;
+    private final TimesheetChantierRepository timesheetChantierRepository;
 
     private void computeTotalHeure(Timesheet timesheet){
         Double heureDebut = ((Long)timesheet.getHeureDebut().getTime()).doubleValue();
@@ -40,6 +42,9 @@ public class BusinessServiceImpl implements BusinessService {
         Timesheet timesheet = mapTimesheetDTOToTimesheet(timesheetDTO);
         timesheet.setUser(currentUser);
         computeTotalHeure(timesheet);
+        timesheetRepository.save(timesheet);
+        List<TimesheetChantier> allTimesheetChantiers = this.buildTimesheetChantierWithChantierListAndTimesheet(timesheet, timesheetDTO.getChantiers());
+        timesheet.setTimesheetChantiers(allTimesheetChantiers);
         timesheetRepository.save(timesheet);
     }
 
@@ -63,6 +68,18 @@ public class BusinessServiceImpl implements BusinessService {
         mapAndSaveTimesheet(timesheetDTO, currentUser);
     }
 
+    public List<TimesheetChantier> buildTimesheetChantierWithChantierListAndTimesheet(Timesheet timesheet, List<Chantier> chantiers){
+        List<TimesheetChantier> allTimesheetChantier = new ArrayList<>();
+        for(Chantier chantier: chantiers){
+            TimesheetChantier timesheetChantier = timesheetChantierRepository.findByChantierAndTimesheet(chantier, timesheet);
+            if(timesheetChantier == null){
+                timesheetChantier = TimesheetChantier.builder().timesheet(timesheet).chantier(chantier).build();
+            }
+            allTimesheetChantier.add(timesheetChantier);
+        }
+        return allTimesheetChantier;
+    }
+
     @Override
     public Timesheet mapTimesheetDTOToTimesheet(TimesheetDTO timesheetDTO) throws ParseException {
         SimpleDateFormat formatDateTimesheet = new SimpleDateFormat("yyyy-MM-dd");
@@ -74,8 +91,9 @@ public class BusinessServiceImpl implements BusinessService {
         Date heureFinPause = formatHeures.parse(timesheetDTO.getHeureFinPauseStr());
         Client client = clientRepository.findByNom(timesheetDTO.getNomClient());
         Chantier chantier = chantierRepository.findByNom(timesheetDTO.getNomChantier());
-        return Timesheet.builder()
-                .chantier(chantier)
+
+
+        Timesheet resTimesheet = Timesheet.builder()
                 .client(client)
                 .date(dateTimesheet)
                 .heureDebut(heureDebut)
@@ -85,6 +103,8 @@ public class BusinessServiceImpl implements BusinessService {
                 .observations(timesheetDTO.getObservations())
                 .id(timesheetDTO.getId())
                 .build();
+
+        return resTimesheet;
     }
 
     @Override

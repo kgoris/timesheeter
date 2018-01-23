@@ -1,3 +1,4 @@
+import {Chantier} from "./chantier";
 export class Timesheet{
   constructor(){
   }
@@ -18,4 +19,5 @@ export class Timesheet{
   annee: string;
   totalHeures : string;
   observations: string;
+  chantiers:Chantier[];
 }
