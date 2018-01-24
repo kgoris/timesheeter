@@ -36,7 +36,11 @@ public class UserController {
 
     @RequestMapping( method = GET, value= "/user/all")
     public List<User> loadAll() {
-        return this.userService.findAll();
+        List<User> users = this.userService.findAll();
+        for(User user : users){
+            user.setSelected(false);
+        }
+        return users;
     }
 
     @PostMapping("/user/new")

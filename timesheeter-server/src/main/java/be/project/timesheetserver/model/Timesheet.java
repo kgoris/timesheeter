@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -64,4 +66,7 @@ public class Timesheet {
         this.timesheetChantiers.add(timesheetChantier);
     }
 
+    @OneToMany(mappedBy = "timesheet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SELECT)
+    private List<TimesheetUser> timesheetUsers;
 }

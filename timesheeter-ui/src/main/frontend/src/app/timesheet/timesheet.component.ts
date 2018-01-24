@@ -34,7 +34,7 @@ export class TimesheetComponent implements OnInit {
   filteredChantier: Chantier[];
   ouvrier: User;
   ouvriersAccompagnant: User[];
-
+  allOuvriers : User[];
 
   constructor(private businessService:BusinessService,
               private _eref: ElementRef) { }
@@ -64,6 +64,14 @@ export class TimesheetComponent implements OnInit {
         console.error("Business service - all chantiers - an error happened")
       }
     );
+
+    this.businessService.getAllUser().subscribe(
+      value => {
+        this.allOuvriers = value as User[];
+      }, error =>{
+        console.error("Business service - all ouvrier - an error happened")
+      }
+    )
   }
   searchClient = (text$: Observable<string>) => text$.debounceTime(200).distinctUntilChanged().map(term => term.length < 2 ? []
     : this.allClients.map(client => client.nom).filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
@@ -112,6 +120,8 @@ export class TimesheetComponent implements OnInit {
     return false;
   }
 
+
+
   checkChantierInChantierList(){
     return this.currentTimesheet.chantiers !== null && this.currentTimesheet.chantiers.length >0;
   }
@@ -129,6 +139,18 @@ export class TimesheetComponent implements OnInit {
       return;
     }
 
+    this.currentTimesheet.ouvriersPresents = [];
+    for(let ouvrier of this.allOuvriers){
+      if(ouvrier.selected){
+        ouvrier.selected = false;
+        let user:User = new User();
+        user.active = ouvrier.active;
+        user.firstname = ouvrier.firstname;
+        user.lastname = ouvrier.lastname;
+        user.id = ouvrier.id;
+        this.currentTimesheet.ouvriersPresents.push(user);
+      }
+    }
     this.error = false;
     this.submitted = false;
     this.displayMessage = "";
@@ -138,10 +160,17 @@ export class TimesheetComponent implements OnInit {
     this.currentTimesheet.id = this.localTimesheetId;
     this.localTimesheetId += 1;
 
+
   }
   onModif(timesheet:Timesheet){
     this.currentTimesheet = timesheet;
-
+    for(let ouvrier of this.currentTimesheet.ouvriersPresents){
+      for(let user of this.allOuvriers){
+        if(user.id === ouvrier.id){
+          user.selected = true;
+        }
+      }
+    }
     this.recordedTimesheets = this.recordedTimesheets.filter(x => x !== timesheet);
   }
 

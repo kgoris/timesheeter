@@ -59,6 +59,16 @@
   <div class="row voffset3">
     <div class="col-md-3"></div>
     <div class="col-md-6">
+      <label for="active" class="col-sm-3 col-form-label">Actif</label>
+      <input class="col-sm-3" style="border: 1px solid #868e96"
+             [ngModelOptions]="{standalone: true}"
+             [(ngModel)]="currentUser.active"
+             id="active" type="checkbox"/>
+    </div>
+  </div>
+  <div class="row voffset3">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
       <div  [ngClass]="{'alert alert-success': !error && submitted, 'alert alert-danger': error && submitted}">
         {{displayMessage}}
       </div>

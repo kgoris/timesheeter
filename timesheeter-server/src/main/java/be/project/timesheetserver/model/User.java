@@ -1,6 +1,11 @@
 package be.project.timesheetserver.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
@@ -35,6 +40,15 @@ public class User implements UserDetails, Serializable {
     @Column(name = "lastname")
     private String lastname;
 
+    @Column(name="active")
+    @Getter
+    @Setter
+
+    private Boolean active;
+
+    @Getter
+    @Setter
+    private Boolean selected ;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
