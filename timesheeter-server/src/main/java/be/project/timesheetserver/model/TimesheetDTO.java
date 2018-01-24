@@ -21,6 +21,7 @@ public class TimesheetDTO {
     private String nomClient;
     private String nomChantier;
     private String nomUtilisateur;
+    private Integer idUser;
     private String numeroSemaine;
     private String debutSemaine;
     private String finSemaine;

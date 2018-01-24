@@ -6,6 +6,7 @@ import {NgbDateFRParserFormatter} from "../timesheet/ngv-date-fr-parser-formatte
 import {Client} from "../modeles/client";
 import {Chantier} from "../modeles/chantier";
 import {Observable} from "rxjs/Observable";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-encoding-modal-content',
@@ -36,9 +37,14 @@ export class EncodingModalContentComponent implements OnInit {
     this.chantierChoisis = [];
 
     if(this.currentTimesheet && this.currentTimesheet.dateStr){
+      if(this.currentTimesheet.dateStr.indexOf('-') >= 0){
+        let dateTmp:Date = moment(this.currentTimesheet.dateStr, "YYYY-MM-DD").toDate();
+        this.currentTimesheet.dateStr = moment(dateTmp).format('DD/MM/YYYY')
+      }
       let parser: NgbDateFRParserFormatter = new NgbDateFRParserFormatter();
       let date : any = parser.parse(this.currentTimesheet.dateStr);
       this.currentTimesheet.dateDt = date;
+
     }
     this.businessService.getAllCients().subscribe(
       value => {
@@ -52,6 +58,7 @@ export class EncodingModalContentComponent implements OnInit {
     this.businessService.getAllChantier().subscribe(
       value => {
         this.allChantiers = value as Chantier[];
+
       }, error =>{
         console.error("Business service - all chantiers - an error happened")
       }
@@ -96,9 +103,23 @@ export class EncodingModalContentComponent implements OnInit {
     if(this.currentTimesheet){
       this.currentTimesheet.dateStr = this.businessService.formatDateForServer(this.currentTimesheet.dateDt);
       this.currentTimesheet.chantiers = this.chantierChoisis;
+      this.recomputeNomChantier();
       this.businessService.updateTimesheet(this.currentTimesheet).subscribe();
     }
     this.activeModal.close('Close click')
+  }
+
+  recomputeNomChantier(){
+
+    let nomChantier = "";
+    for(let chantier of this.currentTimesheet.chantiers){
+      let prefix = "-";
+      if(!nomChantier){
+        prefix = "";
+      }
+      nomChantier = nomChantier + prefix + chantier.nom;
+    }
+    this.currentTimesheet.nomChantier = nomChantier;
   }
 
   openDatepicker(id){
@@ -142,6 +163,7 @@ export class EncodingModalContentComponent implements OnInit {
     if (index >= 0) {
       this.chantierChoisis.splice(index, 1);
     }
+    this.allChantiers.push(unChantier);
   }
 
 

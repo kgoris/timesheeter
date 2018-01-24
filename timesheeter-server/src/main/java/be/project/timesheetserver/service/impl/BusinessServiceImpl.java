@@ -1,12 +1,10 @@
 package be.project.timesheetserver.service.impl;
 
 import be.project.timesheetserver.model.*;
-import be.project.timesheetserver.repository.ChantierRepository;
-import be.project.timesheetserver.repository.ClientRepository;
-import be.project.timesheetserver.repository.TimesheetChantierRepository;
-import be.project.timesheetserver.repository.TimesheetRepository;
+import be.project.timesheetserver.repository.*;
 import be.project.timesheetserver.service.BusinessService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -17,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +27,7 @@ public class BusinessServiceImpl implements BusinessService {
     private final ChantierRepository chantierRepository;
     private final ClientRepository clientRepository;
     private final TimesheetChantierRepository timesheetChantierRepository;
+    private final UserRepository userRepository;
 
     private void computeTotalHeure(Timesheet timesheet){
         Double heureDebut = ((Long)timesheet.getHeureDebut().getTime()).doubleValue();
@@ -40,11 +40,16 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     private void mapAndSaveTimesheet(TimesheetDTO timesheetDTO, User currentUser) throws ParseException {
+        Timesheet fetchedTimesheet = null;
+        if(timesheetDTO.getId() != null){
+            fetchedTimesheet = timesheetRepository.findById(timesheetDTO.getId());
+        }
+
         Timesheet timesheet = mapTimesheetDTOToTimesheet(timesheetDTO);
         timesheet.setUser(currentUser);
         computeTotalHeure(timesheet);
         timesheetRepository.save(timesheet);
-        List<TimesheetChantier> allTimesheetChantiers = this.buildTimesheetChantierWithChantierListAndTimesheet(timesheet, timesheetDTO.getChantiers());
+        List<TimesheetChantier> allTimesheetChantiers = this.buildTimesheetChantierWithChantierListAndTimesheet(timesheet, timesheetDTO.getChantiers(), fetchedTimesheet);
         timesheet.setTimesheetChantiers(allTimesheetChantiers);
         timesheetRepository.save(timesheet);
     }
@@ -62,21 +67,31 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public void updateTimesheet(TimesheetDTO timesheetDTO) throws ParseException {
-        User currentUser = (User) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-        mapAndSaveTimesheet(timesheetDTO, currentUser);
+        User user = userRepository.findById(timesheetDTO.getIdUser());
+        mapAndSaveTimesheet(timesheetDTO, user);
     }
 
-    public List<TimesheetChantier> buildTimesheetChantierWithChantierListAndTimesheet(Timesheet timesheet, List<Chantier> chantiers){
+    public List<TimesheetChantier> buildTimesheetChantierWithChantierListAndTimesheet(Timesheet timesheet, List<Chantier> chantiers, Timesheet fetchedTimesheet){
         List<TimesheetChantier> allTimesheetChantier = new ArrayList<>();
         for(Chantier chantier: chantiers){
             TimesheetChantier timesheetChantier = timesheetChantierRepository.findByChantierAndTimesheet(chantier, timesheet);
             if(timesheetChantier == null){
                 timesheetChantier = TimesheetChantier.builder().timesheet(timesheet).chantier(chantier).build();
+                timesheetChantierRepository.save(timesheetChantier);
             }
             allTimesheetChantier.add(timesheetChantier);
+        }
+        if(fetchedTimesheet != null) {
+            List<TimesheetChantier> timesheetChantiers = timesheetChantierRepository.findByTimesheet(fetchedTimesheet);
+            Iterator<TimesheetChantier> allTCit = timesheetChantiers.iterator();
+            while (allTCit.hasNext()) {
+                TimesheetChantier timesheetChantier = allTCit.next();
+                if (!chantiers.contains(timesheetChantier.getChantier())) {
+                    timesheetChantierRepository.delete(timesheetChantier);
+                    allTCit.remove();
+
+                }
+            }
         }
         return allTimesheetChantier;
     }
@@ -127,6 +142,7 @@ public class BusinessServiceImpl implements BusinessService {
                 .heureFinStr(heureFin)
                 .heureDebutPauseStr(heureDebutPause)
                 .heureFinPauseStr(heureFinPause)
+                .idUser(timesheet.getUser().getId())
                 .build();
     }
 
@@ -195,6 +211,8 @@ public class BusinessServiceImpl implements BusinessService {
                     .nomChantier(nomsChantiers)
                     .nomUtilisateur((String) recordArray[12] + " " + (String) recordArray[13])
                     .id((Integer)recordArray[14])
+                    .idUser((Integer) recordArray[15])
+                    .observations((String) recordArray[16])
                     .build();
         }else{
             timesheetDTO = TimesheetDTO.builder()
@@ -213,6 +231,8 @@ public class BusinessServiceImpl implements BusinessService {
                     .nomChantier(nomsChantiers)
                     .nomUtilisateur((String) recordArray[12] + " " + (String) recordArray[13])
                     .id((Integer)recordArray[14])
+                    .idUser((Integer) recordArray[15])
+                    .observations((String) recordArray[16])
                     .build();
         }
 

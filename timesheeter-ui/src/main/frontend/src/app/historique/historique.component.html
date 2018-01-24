@@ -9,7 +9,7 @@
   <div class="row voffset3">
     <div class="col-3">
       <label for="historyType" class="col-sm-4">Type:</label>
-      <select (change)="onSelectFilter()" name="chosenHistoryType" id="historyType" [(ngModel)]="chosenHistoryType" >
+      <select name="chosenHistoryType" id="historyType" [(ngModel)]="chosenHistoryType" >
         <option value="" ></option>
         <option *ngFor="let historyType of historyTypes">
           {{ historyType }}
@@ -114,7 +114,7 @@
         <th scope="row">{{timesheet.nomUtilisateur}}</th>
         <td>{{timesheet.nomClient}}</td>
         <td>{{timesheet.nomChantier}}</td>
-        <td>{{formatDateForDisplay(timesheet.dateDt)}}</td>
+        <td>{{formatDateForDisplay(timesheet)}}</td>
         <td>{{timesheet.heureDebutStr}}</td>
         <td>{{timesheet.heureFinStr}}</td>
         <td>{{timesheet.heureDebutPauseStr}}</td>

@@ -7,6 +7,7 @@ import {Timesheet} from "../modeles/timesheet";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Semaine} from "../modeles/Semaine";
 import {NgbDateFRParserFormatter} from "../timesheet/ngv-date-fr-parser-formatter";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-historique',
@@ -89,7 +90,12 @@ export class HistoriqueComponent implements OnInit {
     this.allSemaines = timeMap["semaine"];
     this.allYear = timeMap["year"];
   }
-  formatDateForDisplay(date:any){
+  formatDateForDisplay(timesheet:Timesheet){
+    if(timesheet.dateStr.indexOf('-') >= 0){
+      let dateTmp:Date = moment(timesheet.dateStr, "YYYY-MM-DD").toDate();
+      timesheet.dateStr = moment(dateTmp).format('DD/MM/YYYY')
+    }
+    let date: any = timesheet.dateDt;
     let day = date.day;
     let month = date.month;
     if(day.length ===1){
@@ -103,7 +109,10 @@ export class HistoriqueComponent implements OnInit {
   }
 
   onSelectFilter() {
-    if ((this.chosenUtilisateur || this.chosenClient || this.chosenChantier) && this.chosenSortType && this.chosenHistoryType) {
+    if ((this.chosenUtilisateur || this.chosenClient || this.chosenChantier) && this.chosenHistoryType) {
+      this.chosenMonth = null;
+      this.chosenSemaine = null;
+      this.chosenYear = null;
       if (this.chosenHistoryType === this.user_const) {
         this.businessService.getTimesheetForUser(this.chosenUtilisateur.id).subscribe(
           value => {

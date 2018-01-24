@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {Timesheet} from "../modeles/timesheet";
 import {EncodingModalContentComponent} from "../encoding-modal-content/encoding-modal-content.component";
-import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-encoding-modal',

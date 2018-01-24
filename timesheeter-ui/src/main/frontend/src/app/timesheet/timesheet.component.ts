@@ -179,6 +179,7 @@ export class TimesheetComponent implements OnInit {
       this.allChantiers.splice(indexAllChantiers, 1);
       this.chantier = null;
     }
+    this.recomputeNomChantier();
   }
 
   displayFn(val: Chantier) {
@@ -199,5 +200,18 @@ export class TimesheetComponent implements OnInit {
     if(indexAll < 0){
       this.allChantiers.push(unChantier);
     }
+  }
+
+  recomputeNomChantier(){
+
+    let nomChantier = "";
+    for(let chantier of this.currentTimesheet.chantiers){
+      let prefix = "-";
+      if(!nomChantier){
+        prefix = "";
+      }
+      nomChantier = nomChantier + prefix + chantier.nom;
+    }
+    this.currentTimesheet.nomChantier = nomChantier;
   }
 }
