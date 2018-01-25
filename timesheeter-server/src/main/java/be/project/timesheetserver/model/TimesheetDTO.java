@@ -30,4 +30,5 @@ public class TimesheetDTO {
     private String totalHeures;
     private String observations;
     private List<Chantier> chantiers;
+    private List<User> ouvriersPresents;
 }

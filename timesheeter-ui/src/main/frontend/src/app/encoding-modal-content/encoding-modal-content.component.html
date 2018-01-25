@@ -8,6 +8,7 @@
   <div  class = "row alert alert-danger" *ngIf="displayValidationMessage">
     {{displayValidationMessage}}
   </div>
+  {{currentTimesheet.id}}
   <form>
     <div class="form-group">
         <label for="dateJour">Date du jour</label>
@@ -70,6 +71,19 @@
           <mat-icon matChipRemove><i class="fa fa-minus-square" aria-hidden="true"></i></mat-icon>
         </mat-chip>
       </mat-chip-list>
+    </div>
+    <div class="row">
+      <div class="col-md-6"> <label style="margin-left: 15px">Ouvriers accompagnants</label>
+      </div>
+    </div>
+    <div class="row">
+
+
+      <div class="col">
+        <label style="margin: 5px" *ngFor="let ouvrier of allOuvriers"  ngbButtonLabel>
+          <input type="checkbox" [ngModelOptions]="{standalone: true}"  [(ngModel)]="ouvrier.selected"> {{ouvrier.firstname + " " + ouvrier.lastname}} {{ouvrier.selected}}
+        </label>
+      </div>
     </div>
     <div class="form-group">
         <label for="observations" class="col-sm-3 col-form-label">Observations</label>

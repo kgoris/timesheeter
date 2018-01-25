@@ -28,6 +28,7 @@ public class BusinessServiceImpl implements BusinessService {
     private final ClientRepository clientRepository;
     private final TimesheetChantierRepository timesheetChantierRepository;
     private final UserRepository userRepository;
+    private final TimesheetUserRepository timesheetUserRepository;
 
     private void computeTotalHeure(Timesheet timesheet){
         Double heureDebut = ((Long)timesheet.getHeureDebut().getTime()).doubleValue();
@@ -50,7 +51,9 @@ public class BusinessServiceImpl implements BusinessService {
         computeTotalHeure(timesheet);
         timesheetRepository.save(timesheet);
         List<TimesheetChantier> allTimesheetChantiers = this.buildTimesheetChantierWithChantierListAndTimesheet(timesheet, timesheetDTO.getChantiers(), fetchedTimesheet);
+        List<TimesheetUser> allTimesheetUsers = this.buildTimesheetUserWithUsersListAndTimesheet(timesheet, timesheetDTO.getOuvriersPresents(), fetchedTimesheet);
         timesheet.setTimesheetChantiers(allTimesheetChantiers);
+        timesheet.setTimesheetUsers(allTimesheetUsers);
         timesheetRepository.save(timesheet);
     }
 
@@ -71,6 +74,31 @@ public class BusinessServiceImpl implements BusinessService {
         mapAndSaveTimesheet(timesheetDTO, user);
     }
 
+    public List<TimesheetUser> buildTimesheetUserWithUsersListAndTimesheet(Timesheet timesheet, List<User> users, Timesheet fetchedTimesheet){
+        List<TimesheetUser> allTimesheetUser = new ArrayList<>();
+        for(User user: users){
+            TimesheetUser timesheetUser = timesheetUserRepository.findByTimesheetAndUser(timesheet, user);
+
+            if(timesheetUser == null){
+                timesheetUser = TimesheetUser.builder().timesheet(timesheet).user(user).build();
+                timesheetUserRepository.save(timesheetUser);
+            }
+            allTimesheetUser.add(timesheetUser);
+        }
+
+        if(fetchedTimesheet != null){
+            List<TimesheetUser> timesheetUsers = timesheetUserRepository.findByTimesheet(fetchedTimesheet);
+            Iterator<TimesheetUser> it = timesheetUsers.iterator();
+            while (it.hasNext()){
+                TimesheetUser timesheetUser = it.next();
+                if(!users.contains(timesheetUser.getUser())){
+                    timesheetUserRepository.delete(timesheetUser);
+                    it.remove();
+                }
+            }
+        }
+        return allTimesheetUser;
+    }
     public List<TimesheetChantier> buildTimesheetChantierWithChantierListAndTimesheet(Timesheet timesheet, List<Chantier> chantiers, Timesheet fetchedTimesheet){
         List<TimesheetChantier> allTimesheetChantier = new ArrayList<>();
         for(Chantier chantier: chantiers){
@@ -132,6 +160,18 @@ public class BusinessServiceImpl implements BusinessService {
         String heureFin = formatHeures.format(timesheet.getHeureFin());
         String heureDebutPause = formatHeures.format(timesheet.getHeurePauseDebut());
         String heureFinPause = formatHeures.format(timesheet.getHeurePauseFin());
+
+        List<Chantier> chantiers = findChantiersByTimesheetId(timesheet.getId());
+        String nomsChantiers = "";
+        for(Chantier chantier: chantiers){
+            String separator = "-";
+            if(StringUtils.isEmpty(nomsChantiers)){
+                separator = "";
+            }
+
+            nomsChantiers = nomsChantiers + separator + chantier.getNom();
+
+        }
         return TimesheetDTO.builder().
                 id(timesheet.getId()).
                 nomClient(timesheet.getClient().getNom())
@@ -167,6 +207,15 @@ public class BusinessServiceImpl implements BusinessService {
         return allChantiers;
     }
 
+    private List<User> findUsersByTimesheetId(Integer timesheetId){
+        Timesheet timesheet = timesheetRepository.findById(timesheetId);
+        List<TimesheetUser> allTimesheetUsers = timesheetUserRepository.findByTimesheet(timesheet);
+        List<User> allUsers = new ArrayList<>();
+        for(TimesheetUser tu: allTimesheetUsers){
+            allUsers.add(tu.getUser());
+        }
+        return allUsers;
+    }
     private TimesheetDTO mapQueryObjectToTimesheetDTO(Object record, boolean fetchChantiers){
         TimesheetDTO timesheetDTO = null;
         Object[] recordArray = (Object[]) record;
@@ -193,7 +242,7 @@ public class BusinessServiceImpl implements BusinessService {
 
             }
         }
-
+        List<User> users = findUsersByTimesheetId((Integer)recordArray[14]);
         if(recordArray[1] instanceof Integer) {
             timesheetDTO = TimesheetDTO.builder()
                     .dateStr(timesheetDate)
@@ -213,6 +262,7 @@ public class BusinessServiceImpl implements BusinessService {
                     .id((Integer)recordArray[14])
                     .idUser((Integer) recordArray[15])
                     .observations((String) recordArray[16])
+                    .ouvriersPresents(users)
                     .build();
         }else{
             timesheetDTO = TimesheetDTO.builder()
@@ -233,6 +283,7 @@ public class BusinessServiceImpl implements BusinessService {
                     .id((Integer)recordArray[14])
                     .idUser((Integer) recordArray[15])
                     .observations((String) recordArray[16])
+                    .ouvriersPresents(users)
                     .build();
         }
 

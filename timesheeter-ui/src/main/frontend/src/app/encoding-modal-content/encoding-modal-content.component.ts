@@ -7,6 +7,7 @@ import {Client} from "../modeles/client";
 import {Chantier} from "../modeles/chantier";
 import {Observable} from "rxjs/Observable";
 import * as moment from 'moment';
+import {User} from "../modeles/User";
 
 @Component({
   selector: 'app-encoding-modal-content',
@@ -28,6 +29,7 @@ export class EncodingModalContentComponent implements OnInit {
   allChantiers: Chantier[];
   chantier: string;
   chantierChoisis: Chantier[];
+  allOuvriers : User[];
 
   constructor(public activeModal: NgbActiveModal,
               private _eref: ElementRef,
@@ -63,10 +65,27 @@ export class EncodingModalContentComponent implements OnInit {
         console.error("Business service - all chantiers - an error happened")
       }
     );
+    this.businessService.getAllUser().subscribe(
+      value => {
+        this.allOuvriers = value as User[];
+        if(this.currentTimesheet.ouvriersPresents){
+          for(let user of this.currentTimesheet.ouvriersPresents){
+            let ouvrier = this.allOuvriers.find(x => x.id === user.id)
+            ouvrier.selected = true;
+          }
 
-    if(this.currentTimesheet && this.currentTimesheet.chantiers){
-      this.chantierChoisis = this.currentTimesheet.chantiers;
+        }
+      }, error =>{
+        console.error("Business service - all ouvrier - an error happened")
+      }
+    )
+
+    if(this.currentTimesheet){
+      if(this.currentTimesheet.chantiers){
+        this.chantierChoisis = this.currentTimesheet.chantiers;
+      }
     }
+
   }
 
   onDismiss(){
@@ -104,7 +123,20 @@ export class EncodingModalContentComponent implements OnInit {
       this.currentTimesheet.dateStr = this.businessService.formatDateForServer(this.currentTimesheet.dateDt);
       this.currentTimesheet.chantiers = this.chantierChoisis;
       this.recomputeNomChantier();
+      this.currentTimesheet.ouvriersPresents = [];
+      for(let ouvrier of this.allOuvriers){
+        if(ouvrier.selected){
+          ouvrier.selected = false;
+          let user:User = new User();
+          user.active = ouvrier.active;
+          user.firstname = ouvrier.firstname;
+          user.lastname = ouvrier.lastname;
+          user.id = ouvrier.id;
+          this.currentTimesheet.ouvriersPresents.push(user);
+        }
+      }
       this.businessService.updateTimesheet(this.currentTimesheet).subscribe();
+
     }
     this.activeModal.close('Close click')
   }

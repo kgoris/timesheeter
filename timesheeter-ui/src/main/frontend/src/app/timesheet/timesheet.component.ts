@@ -32,8 +32,6 @@ export class TimesheetComponent implements OnInit {
   error : boolean;
   chantier: Chantier;
   filteredChantier: Chantier[];
-  ouvrier: User;
-  ouvriersAccompagnant: User[];
   allOuvriers : User[];
 
   constructor(private businessService:BusinessService,
