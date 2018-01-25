@@ -30,7 +30,7 @@
 
     <div class="right">
 
-      <div *ngIf="hasSignedIn(); else buttonConnect">
+      <div *ngIf="hasSignedIn();">
         <i class="fa fa-user" aria-hidden="true"></i>
         <span style="color: #d5edfa; margin-right: 10px; margin-bottom:0;  padding-bottom: 0;">{{getUser().firstname}} {{getUser().lastname}}</span>
         <button  class="btn btn-secondary my-2 my-sm-0" (click)="logout()" >
@@ -38,7 +38,7 @@
           <span>Se déconnecter</span>
         </button>
       </div>
-      <button #buttonConnect *ngIf="!hasSignedIn()" class="btn btn-secondary my-2 my-sm-0" routerLink="/login" >
+      <button *ngIf="!hasSignedIn()" class="btn btn-secondary my-2 my-sm-0" routerLink="/login" >
         <span>Se connecter</span>
       </button>
     </div>

@@ -39,6 +39,7 @@ export class TimesheetComponent implements OnInit {
 
   ngOnInit() {
     this.currentTimesheet = new Timesheet();
+    this.currentTimesheet.chantiers = [];
     this.recordedTimesheets = [];
     this.localTimesheetId = 0;
     this.submitted = false;
@@ -156,9 +157,16 @@ export class TimesheetComponent implements OnInit {
     this.displayValidationMessage = "";
     this.recordedTimesheets.push(this.currentTimesheet);
     this.currentTimesheet = new Timesheet();
+    this.currentTimesheet.chantiers = [];
     this.currentTimesheet.id = this.localTimesheetId;
     this.localTimesheetId += 1;
-
+    this.businessService.getAllChantier().subscribe(
+      value => {
+        this.allChantiers = value as Chantier[];
+      }, error =>{
+        console.error("Business service - all chantiers - an error happened")
+      }
+    );
 
   }
   onModif(timesheet:Timesheet){
