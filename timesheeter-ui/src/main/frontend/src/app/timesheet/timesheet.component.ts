@@ -66,6 +66,7 @@ export class TimesheetComponent implements OnInit {
     this.businessService.getAllUser().subscribe(
       value => {
         this.allOuvriers = value as User[];
+        this.allOuvriers = this.allOuvriers.filter(x => x.active);
       }, error =>{
         console.error("Business service - all ouvrier - an error happened")
       }

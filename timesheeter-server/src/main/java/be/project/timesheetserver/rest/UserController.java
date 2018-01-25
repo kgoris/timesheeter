@@ -35,6 +35,7 @@ public class UserController {
     }
 
     @RequestMapping( method = GET, value= "/user/all")
+    @PreAuthorize("hasRole('USER')")
     public List<User> loadAll() {
         List<User> users = this.userService.findAll();
         for(User user : users){

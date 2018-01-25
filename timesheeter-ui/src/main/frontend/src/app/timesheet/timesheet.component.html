@@ -123,7 +123,9 @@
 
 
           <label style="margin: 5px" *ngFor="let ouvrier of allOuvriers" class="btn-primary" ngbButtonLabel>
-          <input type="checkbox" [ngModelOptions]="{standalone: true}"  [(ngModel)]="ouvrier.selected"> {{ouvrier.firstname + " " + ouvrier.lastname}}
+
+            <input  type="checkbox" [ngModelOptions]="{standalone: true}"  [(ngModel)]="ouvrier.selected"> {{ouvrier.firstname + " " + ouvrier.lastname}}
+
           </label>
 
       </div>

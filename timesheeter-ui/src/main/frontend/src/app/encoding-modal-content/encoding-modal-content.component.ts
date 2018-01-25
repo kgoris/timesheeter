@@ -35,6 +35,7 @@ export class EncodingModalContentComponent implements OnInit {
               private _eref: ElementRef,
               private businessService:BusinessService) { }
 
+
   ngOnInit() {
     this.chantierChoisis = [];
 
