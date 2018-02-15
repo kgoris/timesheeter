@@ -33,10 +33,13 @@ public class BusinessServiceImpl implements BusinessService {
     private void computeTotalHeure(Timesheet timesheet){
         Double heureDebut = ((Long)timesheet.getHeureDebut().getTime()).doubleValue();
         Double heureFin = ((Long)timesheet.getHeureFin().getTime()).doubleValue();
-        Double heurePauseDebut = ((Long)timesheet.getHeurePauseDebut().getTime()).doubleValue();
-        Double heurePauseFin = ((Long)timesheet.getHeurePauseFin().getTime()).doubleValue();
         Double diffHeures =  (heureFin - heureDebut) / (1000 * 60 *60) ;
-        Double diffHeuresPause = (heurePauseFin - heurePauseDebut) / (1000 * 60 *60);
+        Double diffHeuresPause = 0.0;
+        if(timesheet.getHeurePauseDebut() != null && timesheet.getHeurePauseFin() != null) {
+            Double heurePauseDebut = ((Long) timesheet.getHeurePauseDebut().getTime()).doubleValue();
+            Double heurePauseFin = ((Long) timesheet.getHeurePauseFin().getTime()).doubleValue();
+            diffHeuresPause = (heurePauseFin - heurePauseDebut) / (1000 * 60 * 60);
+        }
         timesheet.setTotalHeures(diffHeures - diffHeuresPause);
     }
 
@@ -131,8 +134,12 @@ public class BusinessServiceImpl implements BusinessService {
         Date dateTimesheet = formatDateTimesheet.parse(timesheetDTO.getDateStr());
         Date heureDebut = formatHeures.parse(timesheetDTO.getHeureDebutStr());
         Date heureFin = formatHeures.parse(timesheetDTO.getHeureFinStr());
-        Date heureDebutPause = formatHeures.parse(timesheetDTO.getHeureDebutPauseStr());
-        Date heureFinPause = formatHeures.parse(timesheetDTO.getHeureFinPauseStr());
+        Date heureDebutPause = null;
+        Date heureFinPause = null;
+        if(!StringUtils.isEmpty(timesheetDTO.getHeureDebutPauseStr()) && !StringUtils.isEmpty(timesheetDTO.getHeureFinPauseStr())) {
+            heureDebutPause = formatHeures.parse(timesheetDTO.getHeureDebutPauseStr());
+            heureFinPause = formatHeures.parse(timesheetDTO.getHeureFinPauseStr());
+        }
         Client client = clientRepository.findByNom(timesheetDTO.getNomClient());
         Chantier chantier = chantierRepository.findByNom(timesheetDTO.getNomChantier());
 
@@ -158,8 +165,12 @@ public class BusinessServiceImpl implements BusinessService {
         String dateTimesheet = formatDateTimesheet.format(timesheet.getDate());
         String heureDebut = formatHeures.format(timesheet.getHeureDebut());
         String heureFin = formatHeures.format(timesheet.getHeureFin());
-        String heureDebutPause = formatHeures.format(timesheet.getHeurePauseDebut());
-        String heureFinPause = formatHeures.format(timesheet.getHeurePauseFin());
+        String heureDebutPause = "";
+        String heureFinPause = "";
+        if(timesheet.getHeurePauseFin() != null && timesheet.getHeurePauseDebut() != null) {
+            heureDebutPause = formatHeures.format(timesheet.getHeurePauseDebut());
+            heureFinPause = formatHeures.format(timesheet.getHeurePauseFin());
+        }
 
         List<Chantier> chantiers = findChantiersByTimesheetId(timesheet.getId());
         String nomsChantiers = "";
@@ -226,8 +237,12 @@ public class BusinessServiceImpl implements BusinessService {
         String weekEndDate = formatDateTimesheet.format(recordArray[5]);
         String heureDebut = mapTimeToString((Time)recordArray[6]);
         String heureFin = mapTimeToString((Time)recordArray[7]);
-        String heureDebutPause = mapTimeToString((Time)recordArray[8]);
-        String heureFinPause = mapTimeToString((Time)recordArray[9]);
+        String heureDebutPause = "";
+        String heureFinPause = "";
+        if(recordArray[8] != null && recordArray[9] != null) {
+            heureDebutPause = mapTimeToString((Time) recordArray[8]);
+            heureFinPause = mapTimeToString((Time) recordArray[9]);
+        }
         String nomsChantiers = "";
         List<Chantier> chantiers = new ArrayList<>();
         if(fetchChantiers){

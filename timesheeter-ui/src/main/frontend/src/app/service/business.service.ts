@@ -213,15 +213,28 @@ export class BusinessService {
   }
   checkHours(timesheet:Timesheet):boolean{
     let separator = ":";
-    if(timesheet.heureDebutPauseStr && !timesheet.heureFinPauseStr)
-    if(this.compareTwoHours(timesheet.heureDebutStr.split(separator), timesheet.heureDebutPauseStr.split(separator)) >= 0){
+    if(timesheet.heureDebutPauseStr && !timesheet.heureFinPauseStr){
       return false;
     }
-    if(this.compareTwoHours(timesheet.heureDebutPauseStr.split(separator), timesheet.heureFinPauseStr.split(separator)) > 0){
+    if(timesheet.heureFinPauseStr && !timesheet.heureDebutPauseStr){
       return false;
     }
-    if(this.compareTwoHours(timesheet.heureFinPauseStr.split(separator), timesheet.heureFinStr.split(separator)) >= 0){
+
+    if(!timesheet.heureDebutPauseStr && !timesheet.heureFinPauseStr
+    && this.compareTwoHours(timesheet.heureDebutStr.split(separator), timesheet.heureFinStr.split(separator)) >= 0){
       return false;
+    }
+    if(timesheet.heureDebutPauseStr && timesheet.heureFinPauseStr) {
+
+      if (this.compareTwoHours(timesheet.heureDebutStr.split(separator), timesheet.heureDebutPauseStr.split(separator)) >= 0) {
+        return false;
+      }
+      if (this.compareTwoHours(timesheet.heureDebutPauseStr.split(separator), timesheet.heureFinPauseStr.split(separator)) > 0) {
+        return false;
+      }
+      if (this.compareTwoHours(timesheet.heureFinPauseStr.split(separator), timesheet.heureFinStr.split(separator)) >= 0) {
+        return false;
+      }
     }
 
     return true;
