@@ -29,7 +29,8 @@ export class DetailComponent implements OnInit {
             x.heureDebutStr,
             x.heureFinStr,
             x.heureDebutPauseStr,
-            x.heureFinPauseStr]);
+            x.heureFinPauseStr,
+            x.observations]);
         $('#allTimesheetId').DataTable({
           data: dataSource,
           columns: [
@@ -40,7 +41,8 @@ export class DetailComponent implements OnInit {
             { title: "Heure début" },
             { title: "Heure fin" },
             { title: "Heure début pause" },
-            { title: "Heure fin pause" }
+            { title: "Heure fin pause" },
+            { title: "Observations" }
           ]
         });
       }

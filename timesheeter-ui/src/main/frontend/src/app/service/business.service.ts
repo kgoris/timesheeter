@@ -213,6 +213,7 @@ export class BusinessService {
   }
   checkHours(timesheet:Timesheet):boolean{
     let separator = ":";
+    if(timesheet.heureDebutPauseStr && !timesheet.heureFinPauseStr)
     if(this.compareTwoHours(timesheet.heureDebutStr.split(separator), timesheet.heureDebutPauseStr.split(separator)) >= 0){
       return false;
     }

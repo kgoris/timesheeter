@@ -175,7 +175,7 @@ public class BusinessServiceImpl implements BusinessService {
         return TimesheetDTO.builder().
                 id(timesheet.getId()).
                 nomClient(timesheet.getClient().getNom())
-                .nomChantier(timesheet.getChantier().getNom())
+                .nomChantier(nomsChantiers)
                 .nomUtilisateur(timesheet.getUser().getFirstname() + " " + timesheet.getUser().getLastname())
                 .dateStr(dateTimesheet)
                 .heureDebutStr(heureDebut)
@@ -183,6 +183,7 @@ public class BusinessServiceImpl implements BusinessService {
                 .heureDebutPauseStr(heureDebutPause)
                 .heureFinPauseStr(heureFinPause)
                 .idUser(timesheet.getUser().getId())
+                .observations(timesheet.getObservations())
                 .build();
     }
 
