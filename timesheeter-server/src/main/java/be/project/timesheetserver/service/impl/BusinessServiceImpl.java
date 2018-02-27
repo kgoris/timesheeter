@@ -143,7 +143,10 @@ public class BusinessServiceImpl implements BusinessService {
         Client client = clientRepository.findByNom(timesheetDTO.getNomClient());
         Chantier chantier = chantierRepository.findByNom(timesheetDTO.getNomChantier());
 
-
+        Integer id = timesheetDTO.getId();
+        if(id != null && id == 0){
+            id = null;
+        }
         Timesheet resTimesheet = Timesheet.builder()
                 .client(client)
                 .date(dateTimesheet)
@@ -152,7 +155,7 @@ public class BusinessServiceImpl implements BusinessService {
                 .heurePauseDebut(heureDebutPause)
                 .heurePauseFin(heureFinPause)
                 .observations(timesheetDTO.getObservations())
-                .id(timesheetDTO.getId())
+                .id(id)
                 .build();
 
         return resTimesheet;
