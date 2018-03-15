@@ -69,4 +69,10 @@ public class Timesheet {
     @OneToMany(mappedBy = "timesheet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SELECT)
     private List<TimesheetUser> timesheetUsers;
+
+    @Column(name="active", nullable = false, columnDefinition = "bool default 1")
+    private boolean active;
+
+    @Column(name="facturee", nullable = false, columnDefinition = "bool default 0")
+    private boolean facturee;
 }

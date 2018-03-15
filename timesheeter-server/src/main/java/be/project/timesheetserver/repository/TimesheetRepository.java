@@ -13,6 +13,7 @@ public interface TimesheetRepository extends JpaRepository<Timesheet, Integer> {
             "where u.id=t.userid " +
             "and c.id = t.clientid " +
             "and u.id = :id " +
+            "and t.active = 1 " +
             "ORDER BY t.date DESC ", nativeQuery = true)
     List<Object> findByUser(@Param("id") Integer id);
 
@@ -23,6 +24,7 @@ public interface TimesheetRepository extends JpaRepository<Timesheet, Integer> {
             "and ch.nom = :nomchantier " +
             "and ch.id = tc.chantierid " +
             "and tc.timesheetid = t.id " +
+            "and t.active = 1 " +
             "ORDER BY t.date DESC ", nativeQuery = true)
     List<Object> findByChantier(@Param("nomchantier") String nomChantier );
 
@@ -31,6 +33,7 @@ public interface TimesheetRepository extends JpaRepository<Timesheet, Integer> {
             "where u.id=t.userid " +
             "and c.id = t.clientid " +
             "and c.nom = :nomclient " +
+            "and t.active = 1 " +
             "ORDER BY t.date DESC ", nativeQuery = true)
     List<Object> findByClient(@Param("nomclient") String nomClient);
 

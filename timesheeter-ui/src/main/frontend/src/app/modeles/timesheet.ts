@@ -2,6 +2,7 @@ import {Chantier} from "./chantier";
 import {User} from "./User";
 export class Timesheet{
   constructor(){
+    this.active = true;
   }
   id: number;
   dateStr: string;
@@ -23,4 +24,5 @@ export class Timesheet{
   observations: string;
   chantiers:Chantier[];
   ouvriersPresents: User[];
+  active: boolean;
 }

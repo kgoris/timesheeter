@@ -68,6 +68,12 @@ public class BusinessController {
         return businessService.findAllTimesheetDTO();
     }
 
+    @DeleteMapping("timesheet/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteTimesheet(@PathVariable(name="id") Integer id){
+        businessService.deleteTimesheet(id);
+    }
+
     @RequestMapping("timesheet/user/{usedId}")
     @PreAuthorize("hasRole('ADMIN')")
     public List<TimesheetDTO> timesheetByUser(@PathVariable(name="usedId") Integer userId){

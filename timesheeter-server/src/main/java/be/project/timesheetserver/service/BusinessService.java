@@ -16,4 +16,5 @@ public interface BusinessService {
     List<TimesheetDTO> findTimesheetsByChantier(String nomChantier);
     void createOrUpdateClient(Client client);
     void createOrUpdateChantier(Chantier chantier);
+    void deleteTimesheet(Integer timesheetId);
 }

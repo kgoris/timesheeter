@@ -88,6 +88,10 @@ export class BusinessService {
     return this.httpClient.post(this.config.update_client_url, client, {headers: this.headers});
   }
 
+  deleteTimesheet(timesheet: Timesheet){
+    return this.httpClient.delete(this.config.timesheet_url + '/' + timesheet.id, {headers: this.headers})
+  }
+
   filterIfSemaineAlreadyInArray(semaineToCheck: Semaine, semaineArray: Semaine[]): boolean{
     for(let semaineInArray of semaineArray){
       if(semaineToCheck.numeroSemaine === semaineInArray.numeroSemaine

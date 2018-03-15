@@ -108,6 +108,16 @@ export class HistoriqueComponent implements OnInit {
     return day + '/' + month + '/' + date.year;
   }
 
+  testIfTimesheetActive(timesheet:Timesheet){
+    return typeof(timesheet.active) === "undefined" || typeof(timesheet.active) !== "undefined" && timesheet.active;
+  }
+  displayObservations(observations:string){
+    if(observations){
+      return observations.slice(0,30)
+    }
+    return observations;
+  }
+
   onSelectFilter() {
     if ((this.chosenUtilisateur || this.chosenClient || this.chosenChantier) && this.chosenHistoryType) {
       this.chosenMonth = null;

@@ -32,6 +32,8 @@ import {
   MatInputModule
 } from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { DeleteModalComponent } from './delete-modal/delete-modal.component';
+import { DeleteModalContentComponent } from './delete-modal-content/delete-modal-content.component';
 
 
 
@@ -56,6 +58,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     ClientDetailComponent,
     EncodingModalComponent,
     EncodingModalContentComponent,
+    DeleteModalComponent,
+    DeleteModalContentComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,7 +76,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     MatIconModule
 
   ],
-  entryComponents:[EncodingModalContentComponent],
+  entryComponents:[EncodingModalContentComponent, DeleteModalContentComponent],
   providers: [
     LoginGuard,
     GuestGuard,

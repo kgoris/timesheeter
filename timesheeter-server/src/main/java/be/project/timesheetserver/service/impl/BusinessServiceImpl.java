@@ -204,7 +204,7 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public List<TimesheetDTO> findAllTimesheetDTO() {
         List<Timesheet> timesheetList = timesheetRepository.findAll();
-        return timesheetList.stream().map(aTimesheet -> mapTimesheetToTomesheetDTO(aTimesheet)).collect(Collectors.toList());
+        return timesheetList.stream().filter(Timesheet::isActive).map(aTimesheet -> mapTimesheetToTomesheetDTO(aTimesheet)).collect(Collectors.toList());
     }
 
     private String mapTimeToString(Time time){
@@ -340,5 +340,10 @@ public class BusinessServiceImpl implements BusinessService {
 
     public void createOrUpdateChantier(Chantier chantier){
         chantierRepository.save(chantier);
+    }
+
+    @Override
+    public void deleteTimesheet(Integer timesheetId) {
+        timesheetRepository.delete(timesheetId);
     }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Client} from "../modeles/client";
 import {BusinessService} from "../service";
 import {Timesheet} from "../modeles/timesheet";
+import {isBoolean} from "util";
 declare var $ : any;
 
 @Component({
