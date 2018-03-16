@@ -25,4 +25,5 @@ export class Timesheet{
   chantiers:Chantier[];
   ouvriersPresents: User[];
   active: boolean;
+  facturee: boolean;
 }

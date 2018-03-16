@@ -154,7 +154,9 @@ public class BusinessServiceImpl implements BusinessService {
                 .heureFin(heureFin)
                 .heurePauseDebut(heureDebutPause)
                 .heurePauseFin(heureFinPause)
+                .facturee(timesheetDTO.isFacturee())
                 .observations(timesheetDTO.getObservations())
+                .active(timesheetDTO.isActive())
                 .id(id)
                 .build();
 
@@ -197,6 +199,8 @@ public class BusinessServiceImpl implements BusinessService {
                 .heureDebutPauseStr(heureDebutPause)
                 .heureFinPauseStr(heureFinPause)
                 .idUser(timesheet.getUser().getId())
+                .active(timesheet.isActive())
+                .facturee(timesheet.isFacturee())
                 .observations(timesheet.getObservations())
                 .build();
     }
@@ -281,6 +285,8 @@ public class BusinessServiceImpl implements BusinessService {
                     .id((Integer)recordArray[14])
                     .idUser((Integer) recordArray[15])
                     .observations((String) recordArray[16])
+                    .active((boolean) recordArray[17])
+                    .facturee((boolean) recordArray[18])
                     .ouvriersPresents(users)
                     .build();
         }else{
@@ -302,6 +308,8 @@ public class BusinessServiceImpl implements BusinessService {
                     .id((Integer)recordArray[14])
                     .idUser((Integer) recordArray[15])
                     .observations((String) recordArray[16])
+                    .active((boolean) recordArray[17])
+                    .facturee((boolean) recordArray[18])
                     .ouvriersPresents(users)
                     .build();
         }
@@ -344,6 +352,10 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public void deleteTimesheet(Integer timesheetId) {
-        timesheetRepository.delete(timesheetId);
+        Timesheet timesheet = timesheetRepository.findById(timesheetId);
+        if(timesheet != null){
+            timesheet.setActive(false);
+            timesheetRepository.save(timesheet);
+        }
     }
 }

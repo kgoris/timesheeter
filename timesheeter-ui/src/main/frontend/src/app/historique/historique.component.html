@@ -114,7 +114,7 @@
         <tbody>
         <ng-container *ngFor="let timesheet of filteredTimesheets">
 
-          <tr *ngIf="testIfTimesheetActive(timesheet)"  class="table-primary">
+          <tr *ngIf="testIfTimesheetActive(timesheet)"  [ngClass]="{'table-success': timesheet.facturee}">
             <th scope="row">{{timesheet.nomUtilisateur}}</th>
             <td>{{timesheet.nomClient}}</td>
             <td>{{timesheet.nomChantier}}</td>

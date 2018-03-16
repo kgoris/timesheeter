@@ -29,6 +29,8 @@ public class TimesheetDTO {
     private String annee;
     private String totalHeures;
     private String observations;
+    private boolean facturee;
+    private boolean active;
     private List<Chantier> chantiers;
     private List<User> ouvriersPresents;
 }
