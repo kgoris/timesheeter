@@ -85,6 +85,15 @@
           </option>
         </select>
       </div>
+      <div class="col-4" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType && chosenSortType">
+        <label for="selectFacture" class="col-5">Facturé:</label>
+        <select  name="chosenFacture" id="selectFacture" [(ngModel)]="chosenFacture" >
+          <option value="" ></option>
+          <option [ngValue] = "choixFacture" *ngFor="let choixFacture of factureeList">
+            {{ choixFacture }}
+          </option>
+        </select>
+      </div>
     </div>
 
     <div class="row" *ngIf="(chosenUtilisateur || chosenChantier || chosenClient) && chosenHistoryType && chosenSortType">
@@ -114,7 +123,7 @@
         <tbody>
         <ng-container *ngFor="let timesheet of filteredTimesheets">
 
-          <tr *ngIf="testIfTimesheetActive(timesheet)"  [ngClass]="{'table-success': timesheet.facturee}">
+          <tr *ngIf="testIfTimesheetActive(timesheet) && mustNotBeFiltered(timesheet)"  [ngClass]="{'table-success': timesheet.facturee}">
             <th scope="row">{{timesheet.nomUtilisateur}}</th>
             <td>{{timesheet.nomClient}}</td>
             <td>{{timesheet.nomChantier}}</td>

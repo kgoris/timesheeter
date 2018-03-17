@@ -27,6 +27,8 @@ export class HistoriqueComponent implements OnInit {
   allYear: string[];
   allTimesheet: Timesheet[];
   filteredTimesheets: Timesheet[];
+  factureeList : string[] = ["Non facturé", "Facturé"];
+  chosenFacture: string;
   chosenHistoryType: string;
   chosenSortType: string;
   chosenUtilisateur: User;
@@ -182,6 +184,31 @@ export class HistoriqueComponent implements OnInit {
     this.filteredTimesheets = this.businessService.filterTimesheetsByYear(this.allTimesheet, this.chosenYear);
     this.computeTotalHeures();
     this.formatDateTimesheet();
+  }
+
+  private removeTimesheet(timesheet:Timesheet){
+    let index = this.filteredTimesheets.indexOf(timesheet);
+    if(index >= 0){
+      this.filteredTimesheets.splice(index, 1);
+    }
+  }
+
+  mustNotBeFiltered(timesheet:Timesheet){
+    if(typeof(this.chosenFacture) !== "undefined"){
+      if(timesheet.facturee){
+        console.log("ok");
+      }
+      if(this.chosenFacture === "Facturé"){
+        if(typeof(timesheet.facturee) !=="undefined" && !timesheet.facturee){
+          return false;
+        }
+      } else if(this.chosenFacture === "Non facturé"){
+        if(timesheet.facturee){
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
 }
