@@ -137,7 +137,7 @@
             <td>{{computeTotalTimesheet(timesheet)}}</td>
             <td>{{utilService.shortStringToDisplay(timesheet.observations)}}</td>
             <td>
-              <input type="checkbox" [ngModelOptions]="{standalone: true}"  [(ngModel)]="timesheet.facturee">
+              <input type="checkbox" [ngModelOptions]="{standalone: true}" (change)="onchangeFacture(timesheet)" [(ngModel)]="timesheet.facturee">
             </td>
             <td> <app-encoding-modal [modification]="true" [currentTimesheet]='timesheet'></app-encoding-modal></td>
             <td> <app-delete-modal [currentTimesheet]='timesheet'></app-delete-modal></td>

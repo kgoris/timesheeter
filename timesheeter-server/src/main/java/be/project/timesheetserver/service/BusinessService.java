@@ -17,4 +17,5 @@ public interface BusinessService {
     void createOrUpdateClient(Client client);
     void createOrUpdateChantier(Chantier chantier);
     void deleteTimesheet(Integer timesheetId);
+    void updateFactureOnTimesheet(Integer id, boolean facture);
 }

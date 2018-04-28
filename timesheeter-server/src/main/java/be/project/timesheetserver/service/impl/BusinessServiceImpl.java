@@ -363,4 +363,11 @@ public class BusinessServiceImpl implements BusinessService {
             timesheetRepository.save(timesheet);
         }
     }
+
+    @Override
+    public void updateFactureOnTimesheet(Integer id, boolean facture) {
+        Timesheet timesheet = timesheetRepository.findById(id);
+        timesheet.setFacturee(facture);
+        timesheetRepository.save(timesheet);
+    }
 }

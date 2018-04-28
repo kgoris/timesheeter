@@ -56,6 +56,9 @@ export class BusinessService {
     return this.httpClient.get(this.config.timesheet_client + nomClient);
   }
 
+  getUpdateFactureOnTimesheet(timesheet:Timesheet){
+    return this.httpClient.get(this.config.timesheet_url + "/" + timesheet.id + "/facture/" + timesheet.facturee);
+  }
   createUser(user:User){
     return this.httpClient.post(this.config.create_user, user, {headers: this.headers});
   }

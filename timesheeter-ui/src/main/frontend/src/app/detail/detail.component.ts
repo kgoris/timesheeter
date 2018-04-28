@@ -19,8 +19,6 @@ export class DetailComponent implements OnInit {
   ngOnInit() {
     this.businessService.getAllTimesheets().subscribe(
       value => {
-
-
         this.allTimesheets = value as Timesheet[];
         let dataSource = this.allTimesheets.map(
           x => [

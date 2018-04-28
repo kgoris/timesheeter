@@ -193,9 +193,7 @@ export class HistoriqueComponent implements OnInit {
 
   mustNotBeFiltered(timesheet:Timesheet){
     if(typeof(this.chosenFacture) !== "undefined"){
-      if(timesheet.facturee){
-        console.log("ok");
-      }
+
       if(this.chosenFacture === "Facturé"){
         if(typeof(timesheet.facturee) !=="undefined" && !timesheet.facturee){
           return false;
@@ -209,4 +207,13 @@ export class HistoriqueComponent implements OnInit {
     return true;
   }
 
+  onchangeFacture(timesheet:Timesheet){
+    this.businessService.getUpdateFactureOnTimesheet(timesheet).subscribe(
+      value => {
+
+      }, error => {
+        console.log("timesheet update doesn't work " + timesheet.id + " " + timesheet.facturee );
+      }
+    );
+  }
 }

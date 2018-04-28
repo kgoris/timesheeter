@@ -92,6 +92,11 @@ public class BusinessController {
         return businessService.findTimesheetsByChantier(nomChantier);
     }
 
+    @RequestMapping("timesheet/{id}/facture/{facture}")
+    public void updateFactureOnTimesheet(@PathVariable(name="id") Integer id, @PathVariable(name="facture") boolean facture){
+        businessService.updateFactureOnTimesheet(id, facture);
+    }
+
     @PostMapping("/client/new")
     public void newClient(@RequestBody Client client){
         this.businessService.createOrUpdateClient(client);
