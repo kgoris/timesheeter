@@ -34,6 +34,7 @@ import {
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 import { DeleteModalContentComponent } from './delete-modal-content/delete-modal-content.component';
+import {UtilService} from "./service/util.service";
 
 
 
@@ -85,7 +86,8 @@ import { DeleteModalContentComponent } from './delete-modal-content/delete-modal
     ApiService,
     UserService,
     ConfigService,
-    BusinessService
+    BusinessService,
+    UtilService,
   ],
   bootstrap: [AppComponent]
 })

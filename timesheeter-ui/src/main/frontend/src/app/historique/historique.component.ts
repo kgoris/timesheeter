@@ -8,6 +8,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {Semaine} from "../modeles/Semaine";
 import {NgbDateFRParserFormatter} from "../timesheet/ngv-date-fr-parser-formatter";
 import * as moment from 'moment';
+import {UtilService} from "../service/util.service";
 
 @Component({
   selector: 'app-historique',
@@ -49,7 +50,9 @@ export class HistoriqueComponent implements OnInit {
 
   form: FormGroup;
 
-  constructor(private businessService: BusinessService, private formBuilder: FormBuilder) {
+  constructor(private businessService: BusinessService,
+              private formBuilder: FormBuilder,
+              private utilService: UtilService) {
   }
 
   ngOnInit() {
@@ -113,12 +116,7 @@ export class HistoriqueComponent implements OnInit {
   testIfTimesheetActive(timesheet:Timesheet){
     return typeof(timesheet.active) === "undefined" || typeof(timesheet.active) !== "undefined" && timesheet.active;
   }
-  displayObservations(observations:string){
-    if(observations){
-      return observations.slice(0,30)
-    }
-    return observations;
-  }
+
 
   onSelectFilter() {
     if ((this.chosenUtilisateur || this.chosenClient || this.chosenChantier) && this.chosenHistoryType) {

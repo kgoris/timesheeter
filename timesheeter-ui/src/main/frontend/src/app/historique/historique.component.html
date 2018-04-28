@@ -117,6 +117,8 @@
           <th scope="col">Fin de pause</th>
           <th scope="col">Nbr Heures</th>
           <th scope="col">Observations</th>
+          <th scope="col">Facturé</th>
+          <th></th>
           <th></th>
         </tr>
         </thead>
@@ -133,7 +135,10 @@
             <td>{{timesheet.heureDebutPauseStr}}</td>
             <td>{{timesheet.heureFinPauseStr}}</td>
             <td>{{computeTotalTimesheet(timesheet)}}</td>
-            <td>{{displayObservations(timesheet.observations)}}</td>
+            <td>{{utilService.shortStringToDisplay(timesheet.observations)}}</td>
+            <td>
+              <input type="checkbox" [ngModelOptions]="{standalone: true}"  [(ngModel)]="timesheet.facturee">
+            </td>
             <td> <app-encoding-modal [modification]="true" [currentTimesheet]='timesheet'></app-encoding-modal></td>
             <td> <app-delete-modal [currentTimesheet]='timesheet'></app-delete-modal></td>
           </tr>

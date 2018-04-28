@@ -5,6 +5,7 @@ import be.project.timesheetserver.repository.*;
 import be.project.timesheetserver.service.BusinessService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -165,7 +166,7 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public TimesheetDTO mapTimesheetToTomesheetDTO(Timesheet timesheet) {
-        SimpleDateFormat formatDateTimesheet = new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat formatDateTimesheet = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat formatHeures = new SimpleDateFormat("kk:mm");
         String dateTimesheet = formatDateTimesheet.format(timesheet.getDate());
         String heureDebut = formatHeures.format(timesheet.getHeureDebut());
@@ -208,7 +209,11 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public List<TimesheetDTO> findAllTimesheetDTO() {
         List<Timesheet> timesheetList = timesheetRepository.findAll();
-        return timesheetList.stream().filter(Timesheet::isActive).map(aTimesheet -> mapTimesheetToTomesheetDTO(aTimesheet)).collect(Collectors.toList());
+        return timesheetList.stream()
+                .filter(Timesheet::isActive)
+                .sorted((x,y) -> y.getDate().compareTo(x.getDate()) )
+                .map(aTimesheet -> mapTimesheetToTomesheetDTO(aTimesheet))
+                .collect(Collectors.toList());
     }
 
     private String mapTimeToString(Time time){

@@ -3,6 +3,7 @@ import {Client} from "../modeles/client";
 import {BusinessService} from "../service";
 import {Timesheet} from "../modeles/timesheet";
 import {isBoolean} from "util";
+import {UtilService} from "../service/util.service";
 declare var $ : any;
 
 @Component({
@@ -13,7 +14,7 @@ declare var $ : any;
 export class DetailComponent implements OnInit {
 
   allTimesheets : Timesheet[];
-  constructor(private businessService: BusinessService) { }
+  constructor(private businessService: BusinessService, private utilService:UtilService) { }
 
   ngOnInit() {
     this.businessService.getAllTimesheets().subscribe(
@@ -31,7 +32,7 @@ export class DetailComponent implements OnInit {
             x.heureFinStr,
             x.heureDebutPauseStr,
             x.heureFinPauseStr,
-            x.observations]);
+            this.utilService.shortStringToDisplay(x.observations)]);
         $('#allTimesheetId').DataTable({
           data: dataSource,
           columns: [
