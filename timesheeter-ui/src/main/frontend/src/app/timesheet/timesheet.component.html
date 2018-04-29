@@ -164,7 +164,7 @@
       <tr *ngFor="let timesheet of recordedTimesheets" class="table-primary">
         <th scope="row">{{timesheet.nomClient}}</th>
         <td>{{timesheet.nomChantier}}</td>
-        <td>{{formatDateForDisplay(timesheet.dateDt) }}</td>
+        <td>{{utilService.formatDateForDisplay(timesheet.dateDt) }}</td>
         <td>{{timesheet.heureDebutStr}}</td>
         <td>{{timesheet.heureFinStr}}</td>
         <td>{{timesheet.heureDebutPauseStr}}</td>

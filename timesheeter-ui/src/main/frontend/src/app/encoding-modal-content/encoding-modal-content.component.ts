@@ -8,6 +8,7 @@ import {Chantier} from "../modeles/chantier";
 import {Observable} from "rxjs/Observable";
 import * as moment from 'moment';
 import {User} from "../modeles/User";
+import {UtilService} from "../service/util.service";
 
 @Component({
   selector: 'app-encoding-modal-content',
@@ -33,7 +34,8 @@ export class EncodingModalContentComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private _eref: ElementRef,
-              private businessService:BusinessService) { }
+              private businessService:BusinessService,
+              private utilService: UtilService) { }
 
 
   ngOnInit() {
@@ -107,7 +109,15 @@ export class EncodingModalContentComponent implements OnInit {
     return this.chantierChoisis !== null && this.chantierChoisis.length >0;
 
   }
+  checkInputDate(timesheet: Timesheet): boolean{
+    return this.utilService.checkDate(this.utilService.formatDateForDisplay(timesheet.dateDt));
+  }
   onClose(){
+    this.displayValidationMessage = null;
+    if(!this.checkInputDate(this.currentTimesheet)){
+      this.displayValidationMessage = "La date doit être encodée sous le format JJ/MM/AAAA, exemple: 01/01/2018";
+      return;
+    }
     if (!this.checkHours(this.currentTimesheet)) {
       this.displayValidationMessage = "Erreur dans l'encodage des heures.";
       return;

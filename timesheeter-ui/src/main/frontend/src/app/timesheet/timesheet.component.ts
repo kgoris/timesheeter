@@ -8,6 +8,7 @@ import {Observable} from "rxjs/Observable";
 import {NgbDateFRParserFormatter} from "./ngv-date-fr-parser-formatter";
 import {NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
 import {User} from "../modeles/User";
+import {UtilService} from "../service/util.service";
 
 @Component({
   selector: 'app-timesheet',
@@ -35,6 +36,7 @@ export class TimesheetComponent implements OnInit {
   allOuvriers : User[];
 
   constructor(private businessService:BusinessService,
+              private utilService : UtilService,
               private _eref: ElementRef) { }
 
   ngOnInit() {
@@ -92,21 +94,6 @@ export class TimesheetComponent implements OnInit {
     }
   }
 
-  formatDateForDisplay(date:any){
-    let day = date.day;
-    let month = date.month;
-    if(day.length ===1){
-      day = '0' + day;
-    }
-    if(month.length === 1){
-      month = '0' + month;
-    }
-
-    return day + '/' + month + '/' + date.year;
-  }
-
-
-
   checkHours(timesheet:Timesheet):boolean{
     return this.businessService.checkHours(timesheet);
   }
@@ -120,12 +107,19 @@ export class TimesheetComponent implements OnInit {
     return false;
   }
 
-
+  checkInputDate(timesheet: Timesheet): boolean{
+    return this.utilService.checkDate(this.utilService.formatDateForDisplay(timesheet.dateDt));
+  }
 
   checkChantierInChantierList(){
     return this.currentTimesheet.chantiers !== null && this.currentTimesheet.chantiers.length >0;
   }
   onSubmit() {
+    this.displayValidationMessage = null;
+    if(!this.checkInputDate(this.currentTimesheet)){
+      this.displayValidationMessage = "La date doit être encodée sous le format JJ/MM/AAAA, exemple: 01/01/2018";
+      return;
+    }
     if (!this.checkHours(this.currentTimesheet)) {
       this.displayValidationMessage = "Erreur dans l'encodage des heures.";
       return;
