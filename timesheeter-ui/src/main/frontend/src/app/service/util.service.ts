@@ -2,7 +2,7 @@
  * Created by kevgo on 26-04-18.
  */
 import {Injectable} from "@angular/core";
-import moment = require("moment");
+import * as moment from 'moment';
 
 @Injectable()
 export class UtilService{

@@ -28,6 +28,7 @@ export class UserDetailComponent implements OnInit {
     this.error = false;
     this.submitted = false;
     this.currentUser = new User();
+    this.currentUser.active = true;
     this.currentUser.new = true;
     this.form = this.formBuilder.group({});
     this.route.params
