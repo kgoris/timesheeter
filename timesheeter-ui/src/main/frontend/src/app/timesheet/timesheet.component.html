@@ -140,49 +140,9 @@
     <div class="row row voffset3">
       <div class="col-md-3"></div>
       <div class="col-md-6">
-        <button style="margin-left: 15px" type="submit" class="btn btn-success">Ajouter</button>
+        <button style="margin-left: 15px" type="submit" class="btn btn-success">Sauvegarder</button>
       </div>
     </div>
+    <div class="voffset3"></div>
   </form>
-
-
-  <div class="row voffset3">
-    <table class="table  table-hover">
-      <thead>
-      <tr>
-        <th scope="col">Client</th>
-        <th scope="col">Chantier</th>
-        <th scope="col">Date du jour</th>
-        <th scope="col">Début de journée</th>
-        <th scope="col">Fin de journée</th>
-        <th scope="col">Début de pause</th>
-        <th scope="col">Fin de pause</th>
-        <th scope="col"></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let timesheet of recordedTimesheets" class="table-primary">
-        <th scope="row">{{timesheet.nomClient}}</th>
-        <td>{{timesheet.nomChantier}}</td>
-        <td>{{utilService.formatDateForDisplay(timesheet.dateDt) }}</td>
-        <td>{{timesheet.heureDebutStr}}</td>
-        <td>{{timesheet.heureFinStr}}</td>
-        <td>{{timesheet.heureDebutPauseStr}}</td>
-        <td>{{timesheet.heureFinPauseStr}}</td>
-        <td><button class="btn btn-default" (click)="onModif(timesheet)">Modification</button></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="row voffset3">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-      <button style="margin-left: 15px" (click)="onValidate()" class="btn btn-success">Valider</button>
-    </div>
-  </div>
-  <div class="voffset3">
-  </div>
-  <div  [ngClass]="{'alert alert-success': !error && submitted, 'alert alert-danger': error && submitted}">
-    {{displayMessage}}
-  </div>
 </div>

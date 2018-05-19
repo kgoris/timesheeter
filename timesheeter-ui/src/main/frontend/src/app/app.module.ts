@@ -35,6 +35,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 import { DeleteModalContentComponent } from './delete-modal-content/delete-modal-content.component';
 import {UtilService} from "./service/util.service";
+import {DialogService} from "./service/dialog.service";
+import {CanDesactivateGuard} from "./guard/can-desactivate-guard.service";
 
 
 
@@ -82,12 +84,14 @@ import {UtilService} from "./service/util.service";
     LoginGuard,
     GuestGuard,
     AdminGuard,
+    CanDesactivateGuard,
     AuthService,
     ApiService,
     UserService,
     ConfigService,
     BusinessService,
     UtilService,
+    DialogService
   ],
   bootstrap: [AppComponent]
 })

@@ -9,6 +9,7 @@ import {NgbDateFRParserFormatter} from "./ngv-date-fr-parser-formatter";
 import {NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
 import {User} from "../modeles/User";
 import {UtilService} from "../service/util.service";
+import {DialogService} from "../service/dialog.service";
 
 @Component({
   selector: 'app-timesheet',
@@ -37,6 +38,7 @@ export class TimesheetComponent implements OnInit {
 
   constructor(private businessService:BusinessService,
               private utilService : UtilService,
+              private dialogService: DialogService,
               private _eref: ElementRef) { }
 
   ngOnInit() {
@@ -80,6 +82,19 @@ export class TimesheetComponent implements OnInit {
 
   searchChantier = (text$: Observable<string>) => text$.debounceTime(200).distinctUntilChanged().map(term => term.length < 2 ? []
     : this.allChantiers.map(chantier => chantier.nom).filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+
+  canDeactivate(): Observable<boolean> | boolean {
+    if (!this.currentTimesheet.dateDt
+      || !this.currentTimesheet.heureDebutStr
+      || !this.currentTimesheet.heureFinStr
+      || !this.currentTimesheet.heureDebutPauseStr
+      || !this.currentTimesheet.heureFinPauseStr
+      || !this.currentTimesheet.nomClient
+      || !this.currentTimesheet.nomChantier) {
+      return true;
+    }
+    return this.dialogService.confirm('Si vous cliquez sur OK, votre encodage sera perdu.');
+  }
 
   openDatepicker(id){
     this.dynamicId = id;
@@ -161,18 +176,7 @@ export class TimesheetComponent implements OnInit {
         console.error("Business service - all chantiers - an error happened")
       }
     );
-
-  }
-  onModif(timesheet:Timesheet){
-    this.currentTimesheet = timesheet;
-    for(let ouvrier of this.currentTimesheet.ouvriersPresents){
-      for(let user of this.allOuvriers){
-        if(user.id === ouvrier.id){
-          user.selected = true;
-        }
-      }
-    }
-    this.recordedTimesheets = this.recordedTimesheets.filter(x => x !== timesheet);
+    this.onValidate();
   }
 
   setDates(){

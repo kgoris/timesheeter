@@ -17,6 +17,20 @@ export class DetailComponent implements OnInit {
   constructor(private businessService: BusinessService, private utilService:UtilService) { }
 
   ngOnInit() {
+    $.extend( $.fn.dataTableExt.oSort, {
+      "date-uk-pre": function ( a ) {
+        var ukDatea = a.split('/');
+        return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+      },
+
+      "date-uk-asc": function ( a, b ) {
+        return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+      },
+
+      "date-uk-desc": function ( a, b ) {
+        return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+      }
+    } );
     this.businessService.getAllTimesheets().subscribe(
       value => {
         this.allTimesheets = value as Timesheet[];
@@ -33,11 +47,12 @@ export class DetailComponent implements OnInit {
             this.utilService.shortStringToDisplay(x.observations)]);
         $('#allTimesheetId').DataTable({
           data: dataSource,
+
           columns: [
             { title: "Utilisateur" },
             { title: "Client" },
             { title: "Chantier" },
-            { title: "date" },
+            { title: "date", "sType": "date-uk"  },
             { title: "Heure début" },
             { title: "Heure fin" },
             { title: "Heure début pause" },
