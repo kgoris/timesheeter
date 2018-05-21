@@ -42,6 +42,9 @@ export class HeaderComponent implements OnInit {
   onUtilisateurs(){
     this.router.navigate(["/users"]);
   }
+  onUserHistorical(){
+    this.router.navigate(["/userhistorical"]);
+  }
 
   onChantiers(){
     this.router.navigate(["/chantiers"]);

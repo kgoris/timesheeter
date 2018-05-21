@@ -14,7 +14,7 @@ public interface TimesheetRepository extends JpaRepository<Timesheet, Integer> {
             "and c.id = t.clientid " +
             "and u.id = :id " +
             "and t.active = 1 " +
-            "ORDER BY t.date ", nativeQuery = true)
+            "ORDER BY t.date DESC ", nativeQuery = true)
     List<Object> findByUser(@Param("id") Integer id);
 
     @Query(value = "select t.date, MONTH(t.date), YEAR(t.date), WEEK(t.date), SUBDATE(t.date, WEEKDAY(t.date)), ADDDATE(t.date, 6 - WEEKDAY(t.date)), t.heure_debut, t.heure_fin, t.heure_pause_debut, t.heure_pause_fin, t.total_heures, c.nom as clientNom, u.firstname, u.lastname, t.id, u.id as userId, t.observations, t.active, t.facturee " +
@@ -25,7 +25,7 @@ public interface TimesheetRepository extends JpaRepository<Timesheet, Integer> {
             "and ch.id = tc.chantierid " +
             "and tc.timesheetid = t.id " +
             "and t.active = 1 " +
-            "ORDER BY t.date ", nativeQuery = true)
+            "ORDER BY t.date DESC ", nativeQuery = true)
     List<Object> findByChantier(@Param("nomchantier") String nomChantier );
 
     @Query(value = "select t.date, MONTH(t.date), YEAR(t.date), WEEK(t.date), SUBDATE(t.date, WEEKDAY(t.date)), ADDDATE(t.date, 6 - WEEKDAY(t.date)), t.heure_debut, t.heure_fin, t.heure_pause_debut, t.heure_pause_fin, t.total_heures, c.nom as clientNom, u.firstname, u.lastname, t.id, u.id as userId, t.observations, t.active, t.facturee " +
@@ -34,7 +34,7 @@ public interface TimesheetRepository extends JpaRepository<Timesheet, Integer> {
             "and c.id = t.clientid " +
             "and c.nom = :nomclient " +
             "and t.active = 1 " +
-            "ORDER BY t.date ", nativeQuery = true)
+            "ORDER BY t.date DESC ", nativeQuery = true)
     List<Object> findByClient(@Param("nomclient") String nomClient);
 
     Timesheet findById(Integer id);

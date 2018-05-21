@@ -75,7 +75,7 @@ public class BusinessController {
     }
 
     @RequestMapping("timesheet/user/{usedId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public List<TimesheetDTO> timesheetByUser(@PathVariable(name="usedId") Integer userId){
         return businessService.findTimesheetsByUserId(userId);
     }

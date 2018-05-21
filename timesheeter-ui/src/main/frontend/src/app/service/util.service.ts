@@ -3,6 +3,7 @@
  */
 import {Injectable} from "@angular/core";
 import * as moment from 'moment';
+import {Timesheet} from "../modeles/timesheet";
 
 @Injectable()
 export class UtilService{
@@ -18,7 +19,12 @@ export class UtilService{
     return moment(date, 'DD/MM/YYYY', true).isValid();
   }
 
-  formatDateForDisplay(date:any){
+  formatDateForDisplay(timesheet:Timesheet){
+    if(timesheet.dateStr.indexOf('-') >= 0){
+      let dateTmp:Date = moment(timesheet.dateStr, "YYYY-MM-DD").toDate();
+      timesheet.dateStr = moment(dateTmp).format('DD/MM/YYYY')
+    }
+    let date: any = timesheet.dateDt;
     let day = date.day.toString();
     let month = date.month.toString();
     if(day.length ===1){

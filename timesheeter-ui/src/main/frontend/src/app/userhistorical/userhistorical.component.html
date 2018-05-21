@@ -1,0 +1,37 @@
+<app-header></app-header>
+
+<div *ngIf="allTimesheet" class="row voffset1">
+  <table class="table  table-hover">
+    <thead>
+    <tr>
+      <th scope="col">Client</th>
+      <th scope="col">Chantier</th>
+      <th scope="col">Date du jour</th>
+      <th scope="col">Début de journée</th>
+      <th scope="col">Fin de journée</th>
+      <th scope="col">Début de pause</th>
+      <th scope="col">Fin de pause</th>
+      <th scope="col">Nbr Heures</th>
+      <th scope="col">Observations</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let timesheet of allTimesheet">
+
+      <tr>
+        <td>{{timesheet.nomClient}}</td>
+        <td>{{timesheet.nomChantier}}</td>
+        <td>{{utilService.formatDateForDisplay(timesheet)}}</td>
+        <td>{{timesheet.heureDebutStr}}</td>
+        <td>{{timesheet.heureFinStr}}</td>
+        <td>{{timesheet.heureDebutPauseStr}}</td>
+        <td>{{timesheet.heureFinPauseStr}}</td>
+        <td>{{computeTotalTimesheet(timesheet)}}</td>
+        <td>{{utilService.shortStringToDisplay(timesheet.observations)}}</td>
+        <td> <app-encoding-modal [modification]="true" [currentTimesheet]='timesheet'></app-encoding-modal></td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+</div>

@@ -19,6 +19,7 @@ import {ChantierDetailComponent} from "./chantier-detail/chantier-detail.compone
 import {ClientsComponent} from "./clients/clients.component";
 import {ClientDetailComponent} from "./client-detail/client-detail.component";
 import {CanDesactivateGuard} from "./guard/can-desactivate-guard.service";
+import {UserhistoricalComponent} from "./userhistorical/userhistorical.component";
 
 export const routes: Routes = [
   {
@@ -41,6 +42,11 @@ export const routes: Routes = [
     component: TimesheetComponent,
     canActivate: [LoginGuard],
     canDeactivate: [CanDesactivateGuard]
+  },
+  {
+    path: 'userhistorical',
+    component: UserhistoricalComponent,
+    canActivate: [LoginGuard]
   },
   {
     path: 'detail',

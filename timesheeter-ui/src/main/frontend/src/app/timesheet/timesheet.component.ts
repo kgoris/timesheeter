@@ -123,7 +123,7 @@ export class TimesheetComponent implements OnInit {
   }
 
   checkInputDate(timesheet: Timesheet): boolean{
-    return this.utilService.checkDate(this.utilService.formatDateForDisplay(timesheet.dateDt));
+    return this.utilService.checkDate(this.utilService.formatDateForDisplay(timesheet));
   }
 
   checkChantierInChantierList(){

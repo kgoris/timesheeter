@@ -31,12 +31,16 @@ import {
   MatAutocomplete, MatAutocompleteModule, MatChipsModule, MatFormFieldModule, MatIconModule,
   MatInputModule
 } from "@angular/material";
+import {MatTableModule} from '@angular/material/table';
+
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 import { DeleteModalContentComponent } from './delete-modal-content/delete-modal-content.component';
 import {UtilService} from "./service/util.service";
 import {DialogService} from "./service/dialog.service";
 import {CanDesactivateGuard} from "./guard/can-desactivate-guard.service";
+import { UserhistoricalComponent } from './userhistorical/userhistorical.component';
+import {CdkTableModule} from "@angular/cdk/table";
 
 
 
@@ -63,6 +67,7 @@ import {CanDesactivateGuard} from "./guard/can-desactivate-guard.service";
     EncodingModalContentComponent,
     DeleteModalComponent,
     DeleteModalContentComponent,
+    UserhistoricalComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,8 +81,9 @@ import {CanDesactivateGuard} from "./guard/can-desactivate-guard.service";
     MatInputModule,
     MatFormFieldModule,
     BrowserAnimationsModule,
-    MatIconModule
-
+    MatIconModule,
+    MatTableModule,
+    CdkTableModule
   ],
   entryComponents:[EncodingModalContentComponent, DeleteModalContentComponent],
   providers: [
