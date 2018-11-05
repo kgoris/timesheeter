@@ -57,7 +57,7 @@ public class BusinessController {
     }
 
     @PostMapping("/timesheet")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public void postTimesheet(@RequestBody TimesheetDTO timesheetDTO) throws ParseException {
         businessService.updateTimesheet(timesheetDTO);
     }

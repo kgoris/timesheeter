@@ -20,7 +20,7 @@ export class UtilService{
   }
 
   formatDateForDisplay(timesheet:Timesheet){
-    if(timesheet.dateStr.indexOf('-') >= 0){
+    if(timesheet.dateStr && timesheet.dateStr.indexOf('-') >= 0){
       let dateTmp:Date = moment(timesheet.dateStr, "YYYY-MM-DD").toDate();
       timesheet.dateStr = moment(dateTmp).format('DD/MM/YYYY')
     }

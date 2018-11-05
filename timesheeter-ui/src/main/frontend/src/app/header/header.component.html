@@ -11,7 +11,7 @@
         <li class="nav-item" *ngIf="hasSignedIn()">
           <a class="nav-link" (click) = "onEncodage()">Encodage</a>
         </li>
-        <li class="nav-item" *ngIf="hasSignedIn()">
+        <li class="nav-item" *ngIf="hasSignedIn() && !isAdmin() ">
           <a class="nav-link" (click) = "onUserHistorical()">Historique Utilisateur</a>
         </li>
         <li class="nav-item" *ngIf="isAdmin()">

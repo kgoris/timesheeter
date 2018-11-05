@@ -84,7 +84,9 @@
 
       <div class="col">
         <label style="margin: 5px" *ngFor="let ouvrier of allOuvriers"  ngbButtonLabel>
-          <input *ngIf="ouvrier.active" type="checkbox" [ngModelOptions]="{standalone: true}"  [(ngModel)]="ouvrier.selected"> {{ouvrier.firstname + " " + ouvrier.lastname}}
+          <ng-container *ngIf="ouvrier.active">
+            <input type="checkbox" [ngModelOptions]="{standalone: true}"  [(ngModel)]="ouvrier.selected"> {{ouvrier.firstname + " " + ouvrier.lastname}}
+          </ng-container>
         </label>
       </div>
     </div>

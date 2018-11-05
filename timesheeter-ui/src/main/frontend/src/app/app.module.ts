@@ -82,8 +82,6 @@ import {CdkTableModule} from "@angular/cdk/table";
     MatFormFieldModule,
     BrowserAnimationsModule,
     MatIconModule,
-    MatTableModule,
-    CdkTableModule
   ],
   entryComponents:[EncodingModalContentComponent, DeleteModalContentComponent],
   providers: [
